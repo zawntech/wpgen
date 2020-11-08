@@ -1,0 +1,5 @@
+/**
+ * CSS applied to all {{ module_name }} module instances at the responsive breakpoint.
+ */
+
+.{{ module_dir }} {}

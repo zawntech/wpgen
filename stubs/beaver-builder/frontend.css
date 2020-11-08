@@ -1,0 +1,5 @@
+/**
+ * CSS applied to all {{ module_name }} module instances.
+ */
+
+.{{ module_dir }} {}

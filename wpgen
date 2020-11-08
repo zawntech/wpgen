@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+<?php
+/**
+ * WPGen
+ * by Sideways8.com
+ */
+
+// Load composer autoloader.
+require __DIR__.'/vendor/autoload.php';
+
+// Declare application constants.
+define( 'APP_ROOT', __DIR__ . '/' );
+
+// Print application logo.
+echo \WPGen\Config::get()->logo();
+
+// Create application.
+$app = new Symfony\Component\Console\Application();
+$app->setName('wpgen');
+
+// Get list of files in Commands directory.
+$files = scandir( __DIR__ . '/src/Commands' );
+
+// Exclude directories.
+$files = array_diff( $files, ['.', '..', 'Traits'] );
+
+// Register commands to application.
+foreach( $files as $file ) {
+    $class_name = str_replace( '.php', '', $file );
+    $class_name = 'WPGen\\Commands\\' . $class_name;
+    $app->add( new $class_name );
+}
+
+// Run application.
+$app->run();

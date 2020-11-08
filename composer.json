@@ -1,0 +1,19 @@
+{
+    "name": "sideways8/wpgen",
+    "description": "A WordPress plugin generator",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Marty Eason",
+            "email": "martye@sideways8.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "WPGen\\": "src/"
+        }
+    },
+    "require": {
+        "symfony/console": "^4.2"
+    }
+}

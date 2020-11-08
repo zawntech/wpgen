@@ -1,0 +1,27 @@
+{
+  "name": "wpgen",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "sass": "node assets/scripts/build-scss.js",
+    "watch": "npm-watch sass"
+  },
+  "watch": {
+    "sass": {
+      "patterns": [
+        "bb-modules"
+      ],
+      "extensions": "scss",
+      "quiet": false
+    }
+  },
+  "author": "Zawntech",
+  "license": "GPLv3",
+  "dependencies": {
+    "glob": "^7.1.6",
+    "glob-promise": "^3.4.0",
+    "md5": "^2.2.1",
+    "node-sass": "^4.13.1",
+    "npm-watch": "^0.6.0"
+  }
+}

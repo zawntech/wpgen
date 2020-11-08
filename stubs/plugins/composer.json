@@ -1,0 +1,25 @@
+{
+  "name": "{{ composer_package_name }}",
+  "description": "{{ plugin_description }}",
+  "type": "wordpress-plugin",
+  "authors": [
+    {
+      "name": "{{ composer_author_name }}",
+      "email": "{{ composer_author_email }}"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@github.com:zawntech/wp-admin-options.git"
+    }
+  ],
+  "require": {
+    "zawntech/wp-admin-options": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "{{ plugin_namespace }}\\": "src/"
+    }
+  }
+}
