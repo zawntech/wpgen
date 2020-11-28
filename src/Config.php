@@ -111,4 +111,8 @@ class Config
     public function adminOptions() {
         return $this->loadConfigFile( 'admin-options' );
     }
+
+    public function apiOptions() {
+        return $this->loadConfigFile( 'api-options' );
+    }
 }
