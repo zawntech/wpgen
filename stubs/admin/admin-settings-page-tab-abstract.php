@@ -92,4 +92,36 @@ abstract class AdminSettingsPageTabAbstract
         $string          = sprintf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
         $this->notices[] = $string;
     }
+
+    /**
+     * @param array $keys An array of option keys to be saved as strings.
+     */
+    protected function save_strings( $keys = [] ) {
+        $values = [];
+        foreach( $keys as $key ) {
+            if ( isset( $_POST[$key] ) ) {
+                $value = $_POST[$key];
+                $value = stripslashes( $value );
+                $value = filter_var( $value, FILTER_SANITIZE_STRING );
+                $values[$key] = $value;
+            }
+        }
+        Settings::get()->set( $values );
+    }
+
+    /**
+     * @param array $keys An array of options keys to be saved as parsed JSON.
+     */
+    protected function save_json( $keys = [] ) {
+        $values = [];
+        foreach( $keys as $key ) {
+            if ( isset( $_POST[$key] ) ) {
+                $value = $_POST[$key];
+                $value = stripslashes( $value );
+                $value = json_decode( $value, true );
+                $values[$key] = $value;
+            }
+        }
+        Settings::get()->set( $values );
+    }
 }

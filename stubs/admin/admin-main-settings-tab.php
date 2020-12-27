@@ -36,36 +36,14 @@ class MainSettingsTab extends AdminSettingsPageTabAbstract
 
     public function save() {
 
-        // Process stringy values.
-        $keys = [
+        // Process stringy keys.
+        $this->save_strings([
             'example_option'
-        ];
+        ]);
 
-        $values = [];
-        foreach( $keys as $key ) {
-            if ( isset( $_POST[$key] ) ) {
-                $value = $_POST[$key];
-                $value = stripslashes( $value );
-                $value = filter_var( $value, FILTER_SANITIZE_STRING );
-                $values[$key] = $value;
-            }
-        }
+        // Process JSON keys.
+        $this->save_json([]);
 
-        // Process JSON values.
-        $json_keys = [
-        ];
-
-        foreach( $json_keys as $key ) {
-            if ( isset( $_POST[$key] ) ) {
-                $value = $_POST[$key];
-                $value = stripslashes( $value );
-                $value = json_decode( $value, true );
-                $values[$key] = $value;
-            }
-        }
-
-        Settings::get()->set( $values );
-
-        $this->print_admin_notice( 'Great job!' );
+        $this->print_admin_notice( 'Settings saved!' );
     }
 }
