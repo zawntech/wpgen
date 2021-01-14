@@ -1,11 +1,11 @@
 {
-    "name": "sideways8/wpgen",
-    "description": "A WordPress plugin generator",
+    "name": "zawntech/wpgen",
+    "description": "A WordPress plugin generator and scaffolding tool",
     "type": "library",
     "authors": [
         {
             "name": "Marty Eason",
-            "email": "martye@sideways8.com"
+            "email": "dev@zawntech.com"
         }
     ],
     "autoload": {
