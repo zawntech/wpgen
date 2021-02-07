@@ -115,4 +115,8 @@ class Config
     public function apiOptions() {
         return $this->loadConfigFile( 'api-options' );
     }
+
+    public function apiResourceControllerOptions() {
+        return $this->loadConfigFile( 'api-resource-controller-options' );
+    }
 }
