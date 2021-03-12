@@ -39,6 +39,7 @@ class MainSettingsTab extends AdminSettingsPageTabAbstract
 
         if ( !$this->verify_nonce() ) {
             $this->print_admin_notice( 'Nonce error...', 'error' );
+            return;
         }
 
         // Process stringy keys.

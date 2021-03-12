@@ -56,10 +56,11 @@ class {{ meta_box_class }}MetaBox
         // Verify nonce.
         if (
             !isset( $_POST[$this->get_nonce_key()] ) ||
-            !wp_verify_nonce( $this->get_nonce_key(), $_POST[$this->get_nonce_key()] )
+            !wp_verify_nonce( $_POST[$this->get_nonce_key()], $this->get_nonce_action() )
         ) {
-            return;
+            return false;
         }
+        return true;
 
         // Stringy options
         $keys = [

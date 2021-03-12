@@ -144,7 +144,7 @@ abstract class AdminSettingsPageTabAbstract
     protected function verify_nonce() {
         if (
             !isset( $_POST[$this->get_nonce_key()] ) ||
-            !wp_verify_nonce( $this->get_nonce_action(), $_POST[$this->get_nonce_key()] )
+            !wp_verify_nonce( $_POST[$this->get_nonce_key()], $this->get_nonce_action() )
         ) {
             return false;
         }
