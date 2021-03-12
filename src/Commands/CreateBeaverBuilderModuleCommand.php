@@ -144,15 +144,7 @@ class CreateBeaverBuilderModuleCommand extends Command
             // CSS
             [
                 'source' => 'frontend.css',
-                'target' => 'css/frontend.css'
-            ],
-            [
-                'source' => 'frontend.css',
                 'target' => 'css/frontend.scss'
-            ],
-            [
-                'source' => 'frontend.responsive.css',
-                'target' => 'css/frontend.responsive.css'
             ],
             [
                 'source' => 'frontend.responsive.css',
@@ -181,6 +173,10 @@ class CreateBeaverBuilderModuleCommand extends Command
             [
                 'source' => 'package.json',
                 'target' => '../../package.json',
+            ],
+            [
+                'source' => '_variables.scss',
+                'target' => '../../assets/sass/_variables.scss'
             ]
         ];
 
@@ -216,7 +212,8 @@ class CreateBeaverBuilderModuleCommand extends Command
             'js',
             'css',
             'includes',
-            '../../assets/scripts'
+            '../../assets/scripts',
+            '../../assets/sass',
         ];
 
         foreach ( $dirs as $dir ) {
