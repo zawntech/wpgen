@@ -6,9 +6,10 @@ class {{ post_type_plural }}
 {
     /**
      * @param array $args
-     * @return array|\WP_Post[]
+     * @param boolean $prepare_models Maps WP_Query posts through this model's prepare_post function.
+     * @return \WP_Post[]
      */
-    public static function all( $args = [] ) {
+    public static function all( $args = [], $prepare_models = true ) {
 
         $args = wp_parse_args( $args, [
             'post_type' => {{ post_type_singular }}PostType::KEY,
@@ -17,8 +18,8 @@ class {{ post_type_plural }}
 
         $query = new \WP_Query( $args );
 
-        $posts = array_map( function( $post ) {
-            return static::prepare_post( $post );
+        $posts = array_map( function( $post ) use ( $prepare_models ) {
+            return $prepare_models ? static::prepare_post( $post ) : $post;
         }, $query->posts );
 
         return $posts;
@@ -53,7 +54,8 @@ class {{ post_type_plural }}
     }
 
     /**
-     * @param $post
+     * Modify a \WP_Post object to include relevant post meta or taxonomy data.
+     * @param \WP_Post|int $post
      * @return \WP_Post
      */
     public static function prepare_post( $post ) {
@@ -68,6 +70,7 @@ class {{ post_type_plural }}
     }
 
     /**
+     * Get post meta value by key, defaulting to current loop post ID.
      * @param $key
      * @param int $post_id
      * @return mixed
@@ -79,6 +82,25 @@ class {{ post_type_plural }}
         return get_post_meta( $post_id, $key, true );
     }
 
+    /**
+     * Get post meta value as array.
+     * @param $key
+     * @param int $post_id
+     * @return array
+     */
+    protected static function get_meta_as_array( $key, $post_id = 0 ) {
+        $meta_value = static::get_meta( $key, $post_id );
+        if ( ! is_array( $meta_value ) ) {
+            return [];
+        }
+        return $meta_value;
+    }
+
+    /**
+     * Example option...
+     * @param int $post_id
+     * @return mixed
+     */
     public static function get_some_option( $post_id = 0 ) {
         return static::get_meta( '_some_option', $post_id );
     }

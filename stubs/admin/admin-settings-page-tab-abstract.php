@@ -84,7 +84,7 @@ abstract class AdminSettingsPageTabAbstract
      * Register an admin notice to print to the active tab.
      *
      * @param $content
-     * @param string $type 'success', 'success', 'notice'
+     * @param string $type 'success', 'error', 'notice'
      */
     public function print_admin_notice( $content, $type = 'success' ) {
         $class           = 'is-dismissible notice notice-' . $type;
@@ -123,5 +123,31 @@ abstract class AdminSettingsPageTabAbstract
             }
         }
         Settings::get()->set( $values );
+    }
+
+    protected function get_nonce_key() {
+        return $this->key . '_nonce';
+    }
+
+    protected function get_nonce_action() {
+        return $this->key . '-' . get_current_user_id();
+    }
+
+    protected function nonce_field() {
+        printf(
+            '<input type="hidden" name="%s" value="%s" />',
+            $this->get_nonce_key(),
+            wp_create_nonce( $this->get_nonce_action() )
+        );
+    }
+
+    protected function verify_nonce() {
+        if (
+            !isset( $_POST[$this->get_nonce_key()] ) ||
+            !wp_verify_nonce( $this->get_nonce_action(), $_POST[$this->get_nonce_key()] )
+        ) {
+            return false;
+        }
+        return true;
     }
 }

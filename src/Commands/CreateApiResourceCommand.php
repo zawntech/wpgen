@@ -9,6 +9,7 @@ use WPGen\Commands\Traits\CheckIfComponentAlreadyExists;
 use WPGen\Commands\Traits\CheckWorkingDirectory;
 use WPGen\Commands\Traits\LoadOptions;
 use WPGen\Commands\Traits\QueryOptions;
+use WPGen\Commands\Traits\RegisterClassInConstructor;
 use WPGen\Commands\Traits\RegisterComponentInMainClass;
 use WPGen\Commands\Traits\ProcessStubFiles;
 use WPGen\Config;
@@ -20,11 +21,12 @@ class CreateApiResourceCommand extends Command
         RegisterComponentInMainClass,
         CheckIfComponentAlreadyExists,
         CheckWorkingDirectory,
-        QueryOptions;
+        QueryOptions,
+        RegisterClassInConstructor;
 
     protected $options = [];
 
-    protected static $defaultName = 'api:resource-controller';
+    protected static $defaultName = 'create:api-resource';
 
     protected function configure() {
         $this
@@ -35,18 +37,19 @@ class CreateApiResourceCommand extends Command
 
     protected function interact( InputInterface $input, OutputInterface $output ) {
 
-        // Verify we're in a plugin directory.
+        // Verify we're in a generated plugin directory.
         $this->isWPGenPluginDirectory( $input, $output );
 
-        // Define our component name.
-        $component = 'API\ApiComponent';
+        // Verify component exists...
+        $path = realpath( getcwd() . '/src/API/ApiComponent.php' );
+        if ( !file_exists( $path ) ) {
+            $output->writeln( ["<error>API Component not found, run wpgen create:api first.</error>."] );
+            exit;
+        }
 
         // Query options.
         $options = Config::get()->apiResourceControllerOptions();
         $this->querySecondaryOptions( $input, $output, $options );
-
-        // Register in main class.
-        // $this->registerComponentInMainClass($input, $output, $component);
     }
 
     /**
@@ -61,10 +64,7 @@ class CreateApiResourceCommand extends Command
     protected function execute( InputInterface $input, OutputInterface $output ) {
 
         // Output path.
-        $component_path = getcwd()  . '/src/API/';
-        if ( ! is_dir( $component_path ) ) {
-            mkdir( $component_path );
-        }
+        $component_dir = getcwd()  . '/src/API/';
 
         $stub_path = APP_ROOT . 'stubs/api/';
 
@@ -76,6 +76,15 @@ class CreateApiResourceCommand extends Command
             ],
         ];
 
-        $this->processFiles( $stub_path, $component_path, $files );
+        $this->processFiles( $stub_path, $component_dir, $files );
+
+        // Register class.
+        $path = getcwd() . '/src/API/ApiComponent.php';
+        if ( !file_exists( $path ) ) {
+            $output->writeln( ["<error>$path not found.</error>."] );
+        }
+
+        $class = $this->options['resource-plural-class-name']['value'];
+        $this->addToComponentConstructor( $input, $output, $class . 'Controller', $component_dir );
     }
 }

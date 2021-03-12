@@ -3,10 +3,6 @@ namespace {{ plugin_namespace }}\API;
 
 class {{ resource-plural-class-name }}Controller extends AbstractApiController
 {
-    public function __construct() {
-        add_action( 'rest_api_init', [$this, 'register_routes'] );
-    }
-
     public function register_routes() {
 
         // Get the resource index...
@@ -52,25 +48,25 @@ class {{ resource-plural-class-name }}Controller extends AbstractApiController
 
     public function index( \WP_REST_Request $request ) {
         // Get all (or paginated) items and/or paginate request.
-        return rest_ensure_response([]);
+        return rest_ensure_response( [] );
     }
 
     public function get( \WP_Rest_Request $request ) {
         $resource_id = $request->id;
-        return rest_ensure_response([]);
+        return rest_ensure_response( [] );
     }
 
     public function create( \WP_Rest_Request $request ) {
-        return rest_ensure_response('created');
+        return rest_ensure_response( 'created' );
     }
 
     public function update( \WP_Rest_Request $request ) {
         $resource_id = $request->id;
-        return rest_ensure_response('updated');
+        return rest_ensure_response( 'updated' );
     }
 
     public function delete( \WP_REST_Request $request ) {
         $resource_id = $request->id;
-        return rest_ensure_response('deleted');
+        return rest_ensure_response( 'deleted' );
     }
 }

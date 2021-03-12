@@ -25,6 +25,14 @@ class {{ meta_box_class }}MetaBox
         add_meta_box( static::ID, static::TITLE, [$this, 'render_meta_box'] );
     }
 
+    public function get_nonce_action() {
+        return '{{ meta_box_id }}-' . get_current_user_id();
+    }
+
+    public function get_nonce_key() {
+        return '{{ meta_box_id }}_nonce';
+    }
+
     public function render_meta_box( \WP_Post $post ) {
         ?>
         <table class="form-table">
@@ -38,10 +46,20 @@ class {{ meta_box_class }}MetaBox
             ?>
             </tbody>
         </table>
+
+        <input type="hidden" name="" value="<?= wp_create_nonce( $this->get_nonce_action() ); ?>">
         <?php
     }
 
     public function save_post( $post_id ) {
+
+        // Verify nonce.
+        if (
+            !isset( $_POST[$this->get_nonce_key()] ) ||
+            !wp_verify_nonce( $this->get_nonce_key(), $_POST[$this->get_nonce_key()] )
+        ) {
+            return;
+        }
 
         // Stringy options
         $keys = [

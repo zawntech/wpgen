@@ -29,12 +29,17 @@ class MainSettingsTab extends AdminSettingsPageTabAbstract
                 ]);
                 ?>
             </table>
+            <?php $this->nonce_field(); ?>
             <button type="submit" class="button button-primary">Save</button>
         </form>
         <?php
     }
 
     public function save() {
+
+        if ( !$this->verify_nonce() ) {
+            $this->print_admin_notice( 'Nonce error...', 'error' );
+        }
 
         // Process stringy keys.
         $this->save_strings([

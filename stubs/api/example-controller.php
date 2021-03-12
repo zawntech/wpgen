@@ -3,10 +3,6 @@ namespace {{ plugin_namespace }}\API;
 
 class ExampleController extends AbstractApiController
 {
-    public function __construct() {
-        add_action( 'rest_api_init', [$this, 'register_routes'] );
-    }
-
     public function register_routes() {
 
         // POST {$base}/example-action

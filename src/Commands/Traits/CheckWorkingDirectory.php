@@ -45,9 +45,12 @@ trait CheckWorkingDirectory
         }
     }
 
-    public function getComponentName() {
+    public function getComponentName( $cwd = null ) {
         $component = '';
-        $files = scandir( getcwd() );
+        if ( ! $cwd ) {
+            $cwd = getcwd();
+        }
+        $files = scandir( $cwd );
         foreach( $files as $file ) {
             if ( false !== strpos( $file, 'Component.php' ) ) {
                 $component = str_replace( 'Component.php', '', $file );

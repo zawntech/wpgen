@@ -10,11 +10,15 @@ trait RegisterClassInConstructor
      * @param InputInterface $input
      * @param OutputInterface $output
      * @param $class
+     * @param null|string $cwd If null, then it is assumed we are executing from within a component directory.
      */
-    public function addToComponentConstructor( InputInterface $input, OutputInterface $output, $class ) {
+    public function addToComponentConstructor( InputInterface $input, OutputInterface $output, $class, $cwd = null ) {
 
-        $file = $this->getComponentName() . 'Component.php';
-        $path = getcwd() . '/' . $file;
+        if ( ! $cwd ) {
+            $cwd = getcwd();
+        }
+        $file = $this->getComponentName( $cwd ) . 'Component.php';
+        $path = $cwd. '/' . $file;
         $contents = file_get_contents( $path );
 
         // Extract the 'register_components() { ... }' section of the code.
