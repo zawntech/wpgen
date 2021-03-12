@@ -1,5 +1,5 @@
 <?php
-namespace {{ plugin_namespace }}\BeaverBuilder;
+namespace {{ plugin_namespace }}\BeaverBuilder\Modules;
 
 class {{ module_class }}Module extends \FLBuilderModule
 {

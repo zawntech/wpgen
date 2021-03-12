@@ -1,5 +1,5 @@
 <?php
-namespace {{ plugin_namespace }}\BeaverBuilder;
+namespace {{ plugin_namespace }}\BeaverBuilder\Forms;
 
 class {{ form_class }}SettingsForm
 {

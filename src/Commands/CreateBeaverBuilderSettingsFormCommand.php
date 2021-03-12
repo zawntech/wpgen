@@ -86,7 +86,7 @@ class CreateBeaverBuilderSettingsFormCommand extends Command
 
         $lines = explode( "\n", $search );
         $tail = array_pop( $lines );
-        $lines[] = "            {$this->options['form_class']['value']}SettingsForm::class,";
+        $lines[] = "            Forms\\" . $this->options['form_class']['value'] . "SettingsForm::class,";
         $lines[] = $tail;
 
         $replace = implode( "\n", $lines );
@@ -101,11 +101,15 @@ class CreateBeaverBuilderSettingsFormCommand extends Command
         $stub_path = APP_ROOT . 'stubs/beaver-builder/';
         $component_path = getcwd() . '/src/BeaverBuilder/';
 
+        if ( !is_dir( $component_path . 'Forms' ) ) {
+            mkdir( $component_path . 'Forms', 0775, true );
+        }
+
         // An array of files to process.
         $files = [
             [
                 'source' => 'custom-settings-form.php',
-                'target' => $this->options['form_class']['value'] . 'SettingsForm.php'
+                'target' => 'Forms/' . $this->options['form_class']['value'] . 'SettingsForm.php'
             ]
         ];
 

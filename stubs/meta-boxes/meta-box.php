@@ -47,7 +47,7 @@ class {{ meta_box_class }}MetaBox
             </tbody>
         </table>
 
-        <input type="hidden" name="" value="<?= wp_create_nonce( $this->get_nonce_action() ); ?>">
+        <input type="hidden" name="<?= $this->get_nonce_key(); ?>" value="<?= wp_create_nonce( $this->get_nonce_action() ); ?>">
         <?php
     }
 
@@ -58,9 +58,8 @@ class {{ meta_box_class }}MetaBox
             !isset( $_POST[$this->get_nonce_key()] ) ||
             !wp_verify_nonce( $_POST[$this->get_nonce_key()], $this->get_nonce_action() )
         ) {
-            return false;
+            return;
         }
-        return true;
 
         // Stringy options
         $keys = [

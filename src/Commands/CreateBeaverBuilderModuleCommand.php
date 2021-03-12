@@ -91,12 +91,14 @@ class CreateBeaverBuilderModuleCommand extends Command
 
         $lines = explode( "\n", $search );
         $tail = array_pop( $lines );
-        $lines[] = "            {$this->options['module_class']['value']}Module::class,";
+        $value = $this->options['module_class']['value'];
+        $lines[] = "            Modules\\" . $value . "Module::class,";
         $lines[] = $tail;
 
-        $replace = implode( "\n", $lines );
+        var_dump( $lines );
 
-        $contents = str_replace( $search, $replace, $contents );
+        $replace = implode( "\n", $lines );
+        $contents = substr_replace( $contents, $replace, $start, strlen( $search ) );
 
         file_put_contents( $path, $contents );
     }
@@ -114,7 +116,7 @@ class CreateBeaverBuilderModuleCommand extends Command
         }
 
         // Prompt user if anything items are wrong.
-        $name = $this->options['module_name'];
+        $name = $this->options['module_name']['value'];
         $helper = $this->getHelper( 'question' );
         $question = new ConfirmationQuestion( "<error>\nA {$name} module appears to already exist. \nFiles will be overwritten. Continue? (y/n)</error>", false );
 
@@ -192,11 +194,15 @@ class CreateBeaverBuilderModuleCommand extends Command
         $stub_path = APP_ROOT . 'stubs/beaver-builder/';
         $component_path = getcwd() . '/src/BeaverBuilder/';
 
+        if ( !is_dir( $component_path . 'Modules' ) ) {
+            mkdir( $component_path . 'Modules', 0775, true );
+        }
+
         // An array of files to process.
         $files = [
             [
                 'source' => 'custom-module.php',
-                'target' => $this->options['module_class']['value'] . 'Module.php'
+                'target' => 'Modules/' . $this->options['module_class']['value'] . 'Module.php'
             ]
         ];
 
@@ -217,7 +223,7 @@ class CreateBeaverBuilderModuleCommand extends Command
 
         foreach ( $dirs as $dir ) {
             if ( !is_dir( $path . $dir ) ) {
-                mkdir( $path . $dir, 0777, true );
+                mkdir( $path . $dir, 0775, true );
             }
         }
     }
