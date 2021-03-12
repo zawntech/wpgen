@@ -91,7 +91,7 @@ class CreateBeaverBuilderSettingsFormCommand extends Command
 
         $replace = implode( "\n", $lines );
 
-        $contents = str_replace( $search, $replace, $contents );
+        $contents = substr_replace( $contents, $replace, $start, strlen( $search ) );
 
         file_put_contents( $path, $contents );
     }

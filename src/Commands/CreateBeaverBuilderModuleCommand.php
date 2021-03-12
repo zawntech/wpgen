@@ -95,8 +95,6 @@ class CreateBeaverBuilderModuleCommand extends Command
         $lines[] = "            Modules\\" . $value . "Module::class,";
         $lines[] = $tail;
 
-        var_dump( $lines );
-
         $replace = implode( "\n", $lines );
         $contents = substr_replace( $contents, $replace, $start, strlen( $search ) );
 

@@ -20,7 +20,7 @@ class BeaverBuilderComponent
         }
 
         // Register custom modules.
-        foreach( $this ->modules() as $module ) {
+        foreach( $this->modules() as $module ) {
             \FLBuilder::register_module( $module, $module::module_settings() );
         }
     }
