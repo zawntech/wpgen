@@ -1,5 +1,7 @@
 <?php
 
+use Krystal\Complaints\ComplaintPostType;
+
 namespace {{ plugin_namespace }}\{{ component_name }};
 
 class {{ post_type_plural }}
@@ -23,6 +25,21 @@ class {{ post_type_plural }}
         }, $query->posts );
 
         return $posts;
+    }
+
+    /**
+     * @param array $args Post type args
+     * @return mixed
+     */
+    public static function create( $args = [] ) {
+
+        $args = wp_parse_args( $args, [
+            'post_type' => {{ post_type_singular }}PostType::KEY,
+        ]);
+
+        $post_id = wp_insert_post( $args );
+
+        return $post_id;
     }
 
     /**
