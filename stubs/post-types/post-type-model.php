@@ -1,7 +1,5 @@
 <?php
 
-use Krystal\Complaints\ComplaintPostType;
-
 namespace {{ plugin_namespace }}\{{ component_name }};
 
 class {{ post_type_plural }}
