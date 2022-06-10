@@ -4,7 +4,7 @@ namespace {{ plugin_namespace }}\{{ component_name }};
 
 use Zawntech\WPAdminOptions\UserSelectOption;
 
-class {{ component_name }}UserMeta
+class CustomUserMeta
 {
     public function __construct() {
         add_action( 'show_user_profile', [$this, 'render_fields'] );

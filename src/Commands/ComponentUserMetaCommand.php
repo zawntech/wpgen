@@ -38,10 +38,13 @@ class ComponentUserMetaCommand extends Command
             $output->writeln( ['<error>Command must be run from within a component directory.</error>'] );
         }
 
+        $this->options['component_name'] = ['value' => $this->getComponentName()];
+
         // Query options.
-        $options = Config::get()->metaBoxOptions();
-        $this->queryOptions( $input, $output, $options );
-        $this->confirmOptions( $input, $output, $options );
+        $options = [];
+//        $options = Config::get()->metaBoxOptions();
+//        $this->queryOptions( $input, $output, $options );
+//        $this->confirmOptions( $input, $output, $options );
         $this->mergeOptions( $options );
     }
 
@@ -52,8 +55,8 @@ class ComponentUserMetaCommand extends Command
 
         $files = [
             [
-                'source' => 'meta-box.php',
-                'target' => $this->options['component_name'] . 'UserMeta.php',
+                'source' => 'user-meta.php',
+                'target' => 'CustomUserMeta.php',
             ]
         ];
 
@@ -66,6 +69,6 @@ class ComponentUserMetaCommand extends Command
             $output->writeln( ["<error>$file not found.</error>."] );
         }
 
-        $this->addToComponentConstructor( $input, $output, $class . 'MetaBox' );
+        $this->addToComponentConstructor( $input, $output, 'CustomUserMeta' );
     }
 }
