@@ -8,12 +8,6 @@
       "email": "{{ composer_author_email }}"
     }
   ],
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "git@github.com:zawntech/wp-admin-options.git"
-    }
-  ],
   "require": {
     "zawntech/wp-admin-options": "dev-master"
   },
