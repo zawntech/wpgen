@@ -1,3 +1,4 @@
 output/
 vendor/
 .idea/
+node_modules/
