@@ -69,5 +69,7 @@ class ComponentPostTypeListTableCommand extends Command
         }
 
         $this->addToComponentConstructor( $input, $output, $singular . 'PostTypeListTableFilter' );
+
+        return 0;
     }
 }

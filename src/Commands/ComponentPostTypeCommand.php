@@ -74,5 +74,7 @@ class ComponentPostTypeCommand extends Command
         }
 
         $this->addToComponentConstructor( $input, $output, $singular . 'PostType' );
+
+        return 0;
     }
 }

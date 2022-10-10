@@ -77,6 +77,8 @@ class CreateComponentCommand extends Command
         ];
 
         $this->processFiles( $stub_path, $path, $files );
+
+        return 0;
     }
 
     ////////////////////////////////////////////

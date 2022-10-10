@@ -106,5 +106,7 @@ class CreateAdminCommand extends Command
         ];
 
         $this->processFiles( $stub_path, $component_path, $files );
+
+        return 0;
     }
 }

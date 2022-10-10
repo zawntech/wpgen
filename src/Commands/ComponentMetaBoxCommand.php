@@ -69,5 +69,7 @@ class ComponentMetaBoxCommand extends Command
         }
 
         $this->addToComponentConstructor( $input, $output, $class . 'MetaBox' );
+
+        return 0;
     }
 }

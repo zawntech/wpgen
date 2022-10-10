@@ -66,5 +66,7 @@ class ComponentTaxonomyCommand extends Command
         }
 
         $this->addToComponentConstructor( $input, $output, $singular . 'Taxonomy' );
+
+        return 0;
     }
 }

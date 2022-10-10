@@ -113,6 +113,8 @@ class CreatePluginCommand extends Command
         }, $this->options );
         $json = json_encode( $options, JSON_PRETTY_PRINT );
         file_put_contents( $target_path . '/wpgen.config.json', $json );
+
+        return 0;
     }
 
     ////////////////////////////////////////////

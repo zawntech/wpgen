@@ -66,6 +66,7 @@ class CreateBeaverBuilderModuleCommand extends Command
         $this->copyComponentFiles();
         $this->copyModuleFiles();
         $this->registerModule( $input, $output );
+        return 0;
     }
 
     ////////////////////////////////////////////

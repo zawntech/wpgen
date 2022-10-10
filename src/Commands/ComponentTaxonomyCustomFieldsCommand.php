@@ -66,5 +66,7 @@ class ComponentTaxonomyCustomFieldsCommand extends Command
         }
 
         $this->addToComponentConstructor( $input, $output, $singular . 'TaxonomyCustomFields' );
+
+        return 0;
     }
 }

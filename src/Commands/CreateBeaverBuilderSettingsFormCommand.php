@@ -61,6 +61,7 @@ class CreateBeaverBuilderSettingsFormCommand extends Command
     protected function execute( InputInterface $input, OutputInterface $output ) {
         $this->copySettingsFormFile();
         $this->registerSettingsForm( $input, $output );
+        return 0;
     }
 
     ////////////////////////////////////////////

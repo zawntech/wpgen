@@ -86,5 +86,7 @@ class CreateApiResourceCommand extends Command
 
         $class = $this->options['resource-plural-class-name']['value'];
         $this->addToComponentConstructor( $input, $output, $class . 'Controller', $component_dir );
+
+        return 0;
     }
 }

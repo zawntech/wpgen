@@ -70,5 +70,7 @@ class ComponentUserMetaCommand extends Command
         }
 
         $this->addToComponentConstructor( $input, $output, 'CustomUserMeta' );
+
+        return 0;
     }
 }
