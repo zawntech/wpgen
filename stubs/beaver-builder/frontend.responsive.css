@@ -1,6 +1,6 @@
 /**
  * CSS applied to all {{ module_name }} module instances at the responsive breakpoint.
  */
-@import '../../../assets/sass/_variables.scss';
+@use '../../../assets/sass/_variables.scss';
 
 .{{ module_dir }} {}
