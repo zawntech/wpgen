@@ -109,6 +109,11 @@ class CreateAdminCommand extends Command
             mkdir( $component_path );
         }
 
+        $abstract_path = $component_path . '/Abstract/';
+        if ( ! is_dir( $abstract_path ) ) {
+            mkdir( $abstract_path, 0755, true );
+        }
+
         $tab_namespace = $this->options['settings_page_namespace']['value'];
         $tab_path = $component_path . '/Tabs/' . $tab_namespace . '/';
         if ( ! is_dir( $tab_path ) ) {
@@ -139,15 +144,19 @@ class CreateAdminCommand extends Command
                 ],
                 [
                     'source' => 'admin-settings-page.php',
-                    'target' => 'AdminSettingsPageContainer.php',
+                    'target' => 'Abstract/AdminSettingsPageContainer.php',
                 ],
                 [
                     'source' => 'admin-settings-page-tab-abstract.php',
-                    'target' => 'AdminSettingsPageTabAbstract.php',
+                    'target' => 'Abstract/AdminSettingsPageTabAbstract.php',
                 ],
                 [
                     'source' => 'admin-main-settings-tab.php',
                     'target' => 'Tabs/' . $tab_namespace . '/MainSettingsTab.php',
+                ],
+                [
+                    'source' => 'abstract-settings.php',
+                    'target' => 'Abstract/AbstractSettings.php',
                 ],
                 [
                     'source' => 'settings.php',

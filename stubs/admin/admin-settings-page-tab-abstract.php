@@ -1,5 +1,5 @@
 <?php
-namespace {{ plugin_namespace }}\Admin;
+namespace {{ plugin_namespace }}\Admin\Abstract;
 
 abstract class AdminSettingsPageTabAbstract
 {

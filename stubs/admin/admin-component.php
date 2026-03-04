@@ -1,6 +1,8 @@
 <?php
 namespace {{ plugin_namespace }}\Admin;
 
+use {{ plugin_namespace }}\Admin\Abstract\AdminSettingsPageContainer;
+
 class AdminComponent
 {
     public function __construct() {

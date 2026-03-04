@@ -15,6 +15,8 @@
 - Settings page namespace derived from page name — tabs are generated under `Tabs\{PascalCaseName}\` (e.g., `Tabs\TppGroups\MainSettingsTab`).
 - `create:admin` can be run multiple times to register additional settings pages. Subsequent runs append a new `AdminSettingsPageContainer` block to `AdminComponent::init()` and generate only the new tab files.
 - Top-level admin pages automatically register tabs as submenu items via `$submenu` global, filterable with `{prefix}admin_settings_tabs`.
+- `AbstractSettings` base class for `Settings` — validates `OPTION_KEY` and `PREFIX` constants, supports `$encrypted_keys` with AES-256-CBC encrypt/decrypt via configurable `ENCRYPTION_CONSTANT`.
+- `Admin/Abstract/` directory — `AdminSettingsPageContainer`, `AdminSettingsPageTabAbstract`, and `AbstractSettings` moved into dedicated abstract namespace.
 
 ### Changed
 - `QueryOptions::queryOptions()` skips inferred options and options that already have a value from defaults. Also syncs values to `$this->options` during iteration so conditional `if` checks work within the same query pass.
@@ -23,6 +25,10 @@
 - `AdminSettingsPageContainer` constructor now accepts an options array (`title`, `slug`, `parent_slug`, `capability`, `tabs`) instead of hardcoded properties.
 - `AdminSettingsPageTabAbstract` simplified — removed hook-based registration; the container now manages tabs directly via its `$tabs` array.
 - `AdminSettingsPageTabAbstract::print_admin_notice()` now uses `{{ plugin_text_domain }}` instead of a hardcoded text domain.
+- `QueryOptions` boolean prompt now displays the option label instead of generic "Is everything correct?" text.
+- Fixed PHP 8.1+ `trim(null)` deprecation in `QueryOptions::validateValue()`.
+- `QueryOptions::showSelectedOptionValues()` renders boolean values as "Yes"/"No" and casts all values to string.
+- `QueryOptions::mergeOptions()` uses `array_key_exists` to preserve `false` values.
 
 ### Removed
 - Filter/action hook plumbing (`admin_settings_page_tabs`, `admin_settings_page_render_tab`, etc.) from tab abstract — replaced by direct tab management in the container.

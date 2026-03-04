@@ -19,7 +19,7 @@ trait QueryOptions
     public function mergeOptions( $options ) {
         // Merge module options into main options.
         foreach( $options as $option ) {
-            if ( ! isset( $option['value'] ) ) {
+            if ( ! array_key_exists( 'value', $option ) ) {
                 $option['value'] = '';
             }
             $this->options[$option['key']] = $option;
@@ -115,9 +115,8 @@ trait QueryOptions
 
             // True/false questions
             case 'boolean':
-                // Prompt user if anything items are wrong.
                 $helper = $this->getHelper( 'question' );
-                $question = new ConfirmationQuestion( 'Is everything correct? (y/n)', false );
+                $question = new ConfirmationQuestion( $option['label'] . ' (y/n) ', false );
                 return $helper->ask( $input, $output, $question );
                 break;
 
@@ -187,9 +186,13 @@ trait QueryOptions
         // Prepare table values array.
         $rows = [];
         foreach ( $options as $option ) {
+            $value = $option['value'] ?? '';
+            if ( is_bool( $value ) ) {
+                $value = $value ? 'Yes' : 'No';
+            }
             $rows[] = [
                 $option['label'],
-                $option['value']
+                (string) $value
             ];
         }
 
@@ -208,7 +211,7 @@ trait QueryOptions
      */
     protected function validateValue( $value ) {
 
-        if ( trim( $value ) == '' ) {
+        if ( trim( (string) $value ) == '' ) {
             throw new \Exception( 'A value is required.' );
         }
 

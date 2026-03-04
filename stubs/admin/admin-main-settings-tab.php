@@ -2,7 +2,7 @@
 namespace {{ plugin_namespace }}\Admin\Tabs\{{ settings_page_namespace }};
 
 use {{ plugin_namespace }}\Admin\Settings;
-use {{ plugin_namespace }}\Admin\AdminSettingsPageTabAbstract;
+use {{ plugin_namespace }}\Admin\Abstract\AdminSettingsPageTabAbstract;
 use Zawntech\WPAdminOptions\InputOption;
 
 /**

@@ -1,5 +1,5 @@
 <?php
-namespace {{ plugin_namespace }}\Admin;
+namespace {{ plugin_namespace }}\Admin\Abstract;
 
 /**
  * {{ plugin_name }} Admin settings page container.
