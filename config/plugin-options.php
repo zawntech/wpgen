@@ -4,19 +4,21 @@ return [
         'key' => 'plugin_name',
         'label' => 'Plugin Name',
         'description' => 'The name of the plugin, ie. My Plugin',
-        'type' => 'string'
+        'type' => 'string',
+        'plugin_specific' => true
     ],
     [
         'key' => 'plugin_description',
         'label' => 'Plugin Description',
         'description' => 'The plugin description that displays on the plugins page.',
-        'type' => 'string'
+        'type' => 'string',
+        'plugin_specific' => true
     ],
     [
         'key' => 'plugin_url',
         'label' => 'Plugin URL',
         'description' => 'The main URL of the plugin',
-        'type' => 'string'
+        'type' => 'string',
     ],
     [
         'key' => 'plugin_author',
@@ -34,37 +36,49 @@ return [
         'key' => 'plugin_text_domain',
         'label' => 'Plugin Text Domain',
         'description' => 'Plugin text domain used for translations, ie: my-plugin',
-        'type' => 'string'
+        'type' => 'string',
+        'inferred' => true
     ],
     [
         'key' => 'plugin_namespace',
         'label' => 'Plugin Namespace',
         'description' => 'A namespace used to prefix plugin code, ie: MyPlugin',
-        'type' => 'string'
+        'type' => 'string',
+        'inferred' => true
     ],
     [
         'key' => 'plugin_constants_prefix',
         'label' => 'Plugin Constants Prefix',
         'description' => 'A prefix used for plugin constants, ie: MY_PLUGIN_',
-        'type' => 'string'
+        'type' => 'string',
+        'inferred' => true
     ],
     [
         'key' => 'plugin_main_class',
         'label' => 'Plugin Main Class Name',
         'description' => 'The main class name for the plugin, ie: MyPlugin',
-        'type' => 'string'
+        'type' => 'string',
+        'inferred' => true
     ],
     [
         'key' => 'plugin_filter_prefix',
         'label' => 'Plugin Filter Prefix',
         'description' => 'The prefix used for plugin filters, ie: my_plugin_',
+        'type' => 'string',
+        'inferred' => true
+    ],
+    [
+        'key' => 'composer_vendor_name',
+        'label' => 'Composer Vendor Name',
+        'description' => 'The plugin composer package vendor name',
         'type' => 'string'
     ],
     [
         'key' => 'composer_package_name',
         'label' => 'Composer Package Name',
-        'description' => 'Name of the composer package, ie: author/plugin-name',
-        'type' => 'string'
+        'description' => 'Full composer package name, ie: vendor/plugin-name',
+        'type' => 'string',
+        'inferred' => true
     ],
     [
         'key' => 'composer_author_name',

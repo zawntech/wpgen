@@ -21,6 +21,19 @@ trait LoadOptions
             }
         }
 
+        // Load global defaults.
+        $defaultsPath = APP_ROOT . 'defaults.json';
+        if ( file_exists( $defaultsPath ) ) {
+            $defaults = json_decode( file_get_contents( $defaultsPath ), true );
+            if ( is_array( $defaults ) ) {
+                foreach ( $defaults as $key => $value ) {
+                    if ( isset( $this->options[$key] ) ) {
+                        $this->options[$key]['value'] = $value;
+                    }
+                }
+            }
+        }
+
         // Read json
         $path = getcwd() . '/wpgen.config.json';
         if ( ! file_exists( $path ) ) {

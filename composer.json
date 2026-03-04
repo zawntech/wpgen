@@ -14,6 +14,7 @@
         }
     },
     "require": {
-        "symfony/console": "^v6.4.22"
+        "symfony/console": "^v6.4.22",
+        "symfony/process": "^8.0"
     }
 }

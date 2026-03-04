@@ -5,6 +5,7 @@ namespace WPGen\Commands;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 use WPGen\Commands\Traits\CheckWorkingDirectory;
 use WPGen\Commands\Traits\LoadOptions;
 use WPGen\Commands\Traits\ProcessStubFiles;
@@ -32,6 +33,7 @@ class CreatePluginCommand extends Command
         // Check if we're in a 'plugins' directory.
         $this->isWPPluginsDirectory( $input, $output );
         $this->queryOptions( $input, $output, $this->options );
+        $this->inferPluginIdentifiers();
         $this->confirmOptions( $input, $output, $this->options );
     }
 
@@ -114,9 +116,66 @@ class CreatePluginCommand extends Command
         $json = json_encode( $options, JSON_PRETTY_PRINT );
         file_put_contents( $target_path . '/wpgen.config.json', $json );
 
+        // Run composer install in the new plugin directory.
+        $output->writeln( '' );
+        $output->writeln( '<info>Running composer install...</info>' );
+
+        $process = new Process( ['composer', 'install'], $path );
+        $process->setTimeout( 120 );
+        $process->run( function ( $type, $buffer ) use ( $output ) {
+            $output->write( $buffer );
+        } );
+
+        if ( ! $process->isSuccessful() ) {
+            $output->writeln( '<error>composer install failed. Run it manually in ' . $path . '</error>' );
+        }
+
+        $output->writeln( '' );
+        $output->writeln( '<info>To get started, run:</info>' );
+        $output->writeln( '  cd ' . $plugin_dir_name );
+
         return 0;
     }
 
-    ////////////////////////////////////////////
+    /**
+     * Convert a plugin name to PascalCase.
+     *
+     * @param string $name
+     * @return string
+     */
+    protected function toPascalCase( $name ) {
+        return str_replace( ' ', '', ucwords( $name ) );
+    }
 
+    /**
+     * Convert a plugin name to snake_case.
+     *
+     * @param string $name
+     * @return string
+     */
+    protected function toSnakeCase( $name ) {
+        return strtolower( str_replace( ' ', '_', $name ) );
+    }
+
+    /**
+     * Infer plugin-specific identifiers from the plugin name and confirm with the user.
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    protected function inferPluginIdentifiers() {
+        $plugin_name = $this->options['plugin_name']['value'];
+
+        // Derive identifiers from plugin name.
+        $this->options['plugin_text_domain']['value']     = strtolower( str_replace( ' ', '-', $plugin_name ) );
+        $this->options['plugin_namespace']['value']       = $this->toPascalCase( $plugin_name );
+        $this->options['plugin_constants_prefix']['value'] = strtoupper( str_replace( ' ', '_', $plugin_name ) ) . '_';
+        $this->options['plugin_main_class']['value']      = $this->toPascalCase( $plugin_name );
+        $this->options['plugin_filter_prefix']['value']   = $this->toSnakeCase( $plugin_name ) . '_';
+
+        // Derive composer package name from vendor + text domain.
+        $vendor = $this->options['composer_vendor_name']['value'] ?? '';
+        $text_domain = $this->options['plugin_text_domain']['value'];
+        $this->options['composer_package_name']['value'] = $vendor . '/' . $text_domain;
+    }
 }
