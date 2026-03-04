@@ -44,6 +44,12 @@ trait QueryOptions
                 continue;
             }
             $option['value'] = $this->queryOption( $input, $output, $option );
+
+            // Sync value to $this->options so conditional 'if' checks work
+            // for subsequent options within the same queryOptions pass.
+            if ( isset( $this->options[$option['key']] ) ) {
+                $this->options[$option['key']]['value'] = $option['value'];
+            }
         }
     }
 

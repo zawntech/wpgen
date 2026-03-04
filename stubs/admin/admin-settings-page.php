@@ -15,27 +15,52 @@ class AdminSettingsPageContainer
     /**
      * @var string Menu and page title.
      */
-    public $title = '{{ plugin_name }} Settings';
+    public $title;
 
     /**
      * @var string
      */
-    public $slug = '{{ settings_page_slug }}-settings';
+    public $slug;
 
     /**
      * @var string If defined, this settings page will be a
      * submenu page instead of a top level administration page.
      */
-    public $parent_slug = '';
+    public $parent_slug;
 
     /**
      * @var string Permission required to view settings page.
      */
-    public $capability = 'manage_options';
+    public $capability;
 
-    public function __construct() {
+    /**
+     * @var AdminSettingsPageTabAbstract[]
+     */
+    public $tabs;
+
+    /**
+     * @param array $options {
+     *     @type string $title       Menu and page title.
+     *     @type string $slug        Page slug.
+     *     @type string $parent_slug Parent menu slug for submenu pages.
+     *     @type string $capability  Required capability. Default 'manage_options'.
+     *     @type AdminSettingsPageTabAbstract[] $tabs Array of tab instances.
+     * }
+     */
+    public function __construct( $options = [] ) {
+        $this->title = $options['title'] ?? '';
+        $this->slug = $options['slug'] ?? '';
+        $this->parent_slug = $options['parent_slug'] ?? '';
+        $this->capability = $options['capability'] ?? 'manage_options';
+        $this->tabs = $options['tabs'] ?? [];
+
         add_action( 'admin_menu', [$this, 'register_settings_page'] );
         add_action( 'admin_init', [$this, 'save_tab_content'] );
+
+        // Filter submenu items at a late priority, after the menu page is registered.
+        if ( empty( $this->parent_slug ) ) {
+            add_action( 'admin_menu', [$this, 'filter_admin_submenu'], 99 );
+        }
     }
 
     public function register_settings_page() {
@@ -60,23 +85,59 @@ class AdminSettingsPageContainer
     }
 
     /**
-     * @return array
+     * Replace the auto-generated submenu with tab-based navigation items.
+     * Runs at priority 99 so the menu page is already registered.
+     */
+    public function filter_admin_submenu() {
+        global $submenu;
+
+        $tabs = apply_filters( '{{ plugin_filter_prefix }}admin_settings_tabs', $this->tabs, $this->slug );
+
+        $items = [];
+        foreach ( $tabs as $tab ) {
+            $items[] = [
+                $tab->label,
+                $this->capability,
+                'admin.php?page=' . $this->slug . '&tab=' . $tab->key,
+            ];
+        }
+
+        $submenu[$this->slug] = $items;
+    }
+
+    /**
+     * @return array Associative array of tab key => label.
      */
     public function get_tabs() {
-        $slug = $this->slug;
-        return apply_filters( 'admin_settings_page_tabs', [], $slug );
+        $tabs = [];
+        foreach ( $this->tabs as $tab ) {
+            $tabs[$tab->key] = $tab->label;
+        }
+        return $tabs;
+    }
+
+    /**
+     * @return AdminSettingsPageTabAbstract|null
+     */
+    public function get_current_tab_instance() {
+        if ( empty( $this->tabs ) ) {
+            return null;
+        }
+
+        if ( isset( $_GET['tab'] ) ) {
+            foreach ( $this->tabs as $tab ) {
+                if ( $tab->key === $_GET['tab'] ) {
+                    return $tab;
+                }
+            }
+        }
+
+        return $this->tabs[0];
     }
 
     public function get_current_tab() {
-        $tabs = $this->get_tabs();
-        if ( empty( $tabs ) ) {
-            return '';
-        }
-        $tab_values = array_keys( $tabs );
-        if ( ! isset( $_GET['tab'] ) || empty( $_GET['tab'] ) ) {
-            return $tab_values[0];
-        }
-        return $_GET['tab'];
+        $tab = $this->get_current_tab_instance();
+        return $tab ? $tab->key : '';
     }
 
     public function render_settings_page() {
@@ -92,8 +153,14 @@ class AdminSettingsPageContainer
         <?php
     }
 
+    /**
+     * Get the admin URL for a given tab key.
+     *
+     * @param string $key Tab key.
+     * @return string
+     */
     public function get_url( $key = '' ) {
-        return admin_url() . 'admin.php?page=' . $this->slug . '&tab=' . $key;
+        return admin_url( 'admin.php?page=' . $this->slug . '&tab=' . $key );
     }
 
     public function render_tab_navigation() {
@@ -108,15 +175,17 @@ class AdminSettingsPageContainer
     }
 
     public function render_tab_content() {
-        $slug = $this->slug;
-        $tab = $this->get_current_tab();
-        do_action( 'admin_settings_page_render_tab', $tab, $slug );
+        $tab = $this->get_current_tab_instance();
+        if ( $tab ) {
+            $tab->render();
+        }
     }
 
     public function render_admin_notices() {
-        $slug = $this->slug;
-        $tab  = $this->get_current_tab();
-        do_action( 'admin_settings_page_render_admin_notices', $tab, $slug );
+        $tab = $this->get_current_tab_instance();
+        if ( $tab ) {
+            $tab->print_notices();
+        }
     }
 
     public function save_tab_content() {
@@ -127,8 +196,9 @@ class AdminSettingsPageContainer
         ) {
             return;
         }
-        $slug = $this->slug;
-        $tab  = $this->get_current_tab();
-        do_action( 'admin_settings_page_save_tab', $tab, $slug );
+        $tab = $this->get_current_tab_instance();
+        if ( $tab ) {
+            $tab->save();
+        }
     }
 }

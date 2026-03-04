@@ -9,10 +9,14 @@ class AdminComponent
 
     public function init() {
 
-        // Register settings page container.
-        new AdminSettingsPageContainer;
-
-        // Register individual pages.
-        new Tabs\MainSettingsTab;
+        // Register {{ settings_page_name }} settings page.
+        new AdminSettingsPageContainer([
+            'title' => '{{ settings_page_name }}',
+            'slug' => '{{ settings_page_slug }}',
+            'parent_slug' => '{{ parent_slug }}',
+            'tabs' => [
+                new Tabs\{{ settings_page_namespace }}\MainSettingsTab,
+            ],
+        ]);
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace {{ plugin_namespace }}\Admin\Tabs;
+namespace {{ plugin_namespace }}\Admin\Tabs\{{ settings_page_namespace }};
 
 use {{ plugin_namespace }}\Admin\Settings;
 use {{ plugin_namespace }}\Admin\AdminSettingsPageTabAbstract;
