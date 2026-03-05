@@ -1,6 +1,8 @@
 <?php
 namespace {{ plugin_namespace }}\Admin\Abstract;
 
+use {{ plugin_namespace }}\Admin\Settings;
+
 abstract class AdminSettingsPageTabAbstract
 {
     public $key = '';

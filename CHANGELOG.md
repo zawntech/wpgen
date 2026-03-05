@@ -18,7 +18,12 @@
 - `AbstractSettings` base class for `Settings` — validates `OPTION_KEY` and `PREFIX` constants, supports `$encrypted_keys` with AES-256-CBC encrypt/decrypt via configurable `ENCRYPTION_CONSTANT`.
 - `Admin/Abstract/` directory — `AdminSettingsPageContainer`, `AdminSettingsPageTabAbstract`, and `AbstractSettings` moved into dedicated abstract namespace.
 
+### Fixed
+- `AdminSettingsPageTabAbstract` stub missing `use Settings` import after move to `Admin\Abstract` namespace — caused fatal error on `Settings::get()` calls.
+
 ### Changed
+- `composer.json` type changed from `library` to `project`, added `MIT` license, `php ^8.1` requirement, and `bin` entry for `wpgen`.
+- `wpgen` entry point searches multiple autoloader paths to support global Composer installs.
 - `QueryOptions::queryOptions()` skips inferred options and options that already have a value from defaults. Also syncs values to `$this->options` during iteration so conditional `if` checks work within the same query pass.
 - `EnqueueAssets` stub simplified — removed third-party dependencies (select2, vue) and `register` method. Added `$allow_debug_assets` property and `get_plugin_version()` method that returns `time()` in debug mode.
 - Stub `composer.json` updated `wp-admin-options` branch to `dev-dev`.
