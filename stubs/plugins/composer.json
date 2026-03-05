@@ -9,7 +9,7 @@
     }
   ],
   "require": {
-    "zawntech/wp-admin-options": "dev-dev"
+    "allegedwizard/wp-admin-options": "dev-dev"
   },
   "autoload": {
     "psr-4": {

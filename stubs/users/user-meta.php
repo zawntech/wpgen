@@ -2,7 +2,7 @@
 
 namespace {{ plugin_namespace }}\{{ component_name }};
 
-use Zawntech\WPAdminOptions\UserSelectOption;
+use AllegedWizard\WPAdminOptions\Fields\UserSelectOption;
 
 class CustomUserMeta
 {

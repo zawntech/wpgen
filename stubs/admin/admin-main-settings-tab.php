@@ -3,7 +3,7 @@ namespace {{ plugin_namespace }}\Admin\Tabs\{{ settings_page_namespace }};
 
 use {{ plugin_namespace }}\Admin\Settings;
 use {{ plugin_namespace }}\Admin\Abstract\AdminSettingsPageTabAbstract;
-use Zawntech\WPAdminOptions\InputOption;
+use AllegedWizard\WPAdminOptions\Fields\InputOption;
 
 /**
  * And example settings page tab.

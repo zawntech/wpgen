@@ -25,7 +25,7 @@ brew install composer
 Clone the repo, run composer install, and chmod the wpgen file so that it is executable.
 
 ```bash
-git clone git@github.org:zawntech/wpgen.git
+git clone git@github.org:allegedwizard/wpgen.git
 cd wpgen
 composer install
 chmod 755 wpgen

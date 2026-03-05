@@ -1,7 +1,7 @@
 <?php
 namespace {{ plugin_namespace }}\{{ component_name }};
 
-use Zawntech\WPAdminOptions\InputOption;
+use AllegedWizard\WPAdminOptions\Fields\InputOption;
 
 /**
  * Class {{ meta_box_class }}
