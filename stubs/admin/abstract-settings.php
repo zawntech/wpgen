@@ -1,7 +1,7 @@
 <?php
-namespace {{ plugin_namespace }}\Admin\Abstract;
+namespace {{ plugin_namespace }}\Abstract;
 
-abstract class AbstractSettings
+abstract class SettingsAbstract
 {
     /**
      * WordPress option key for storing settings.

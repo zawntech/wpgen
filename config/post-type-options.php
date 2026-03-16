@@ -22,7 +22,8 @@ return [
         'key' => 'post_type_slug',
         'label' => 'Post Type Slug',
         'description' => 'Post type slug rewrite. Leave empty for no rewrite. ie: books',
-        'type' => 'string'
+        'type' => 'string',
+        'optional' => true,
     ],
     [
         'key' => 'create_list_table',

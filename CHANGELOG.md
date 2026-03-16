@@ -9,6 +9,11 @@
 - `admin-main-settings-tab.php` stub now wraps fields in `OptionsContainer` instead of a hard-coded `<table class="form-table">`.
 - `AbstractPostType::get_args()` updated with missing `register_post_type` arguments: `show_in_rest`, `map_meta_cap`, `query_var`, `delete_with_user`.
 - `AbstractPostType::get_labels()` updated with missing labels: `item_published`, `item_published_privately`, `item_reverted_to_draft`, `item_scheduled`, `item_updated`, `item_link`, `item_link_description`.
+- `component:api` command — generates `HttpClientAbstract` into `src/Abstract/` and a concrete `{{ api_class }}Api` extending it with example `get_something()` and `post_something()` methods.
+- `component:ajax-controller` command — generates `AjaxControllerAbstract` (with `verify_nonce_token()`) into `src/Abstract/` and a concrete `{{ controller_class }}AjaxController` with an example action. Auto-registers in component constructor.
+- `component:taxonomy` refactored to abstract base class pattern — `AbstractTaxonomy` generated into `src/Abstract/`, concrete stub is a thin extension. Full `register_taxonomy` args and labels coverage including `back_to_items`.
+- `create:admin` refactored — `SettingsAbstract` (renamed from `AbstractSettings`) and `AdminSettingsPageTabAbstract` now generated into `src/Abstract/`. `AdminSettingsPageContainer` moved to `src/Admin/`.
+- `post_type_slug` config option marked as optional — can be left empty at the CLI prompt.
 
 ### Fixed
 - Stub `composer.json` updated to require `allegedwizard/wp-admin-options` from Packagist.

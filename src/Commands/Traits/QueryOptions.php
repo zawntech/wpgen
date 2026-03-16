@@ -123,12 +123,13 @@ trait QueryOptions
             // Handle string type options (Default).
             case 'string':
             default:
-                // Prompt new value.
                 $question = new Question( '> ' );
-                $question->setValidator( function( $value ) {
-                    return $this->validateValue( $value );
-                } );
-                return $helper->ask( $input, $output, $question );
+                if ( empty( $option['optional'] ) ) {
+                    $question->setValidator( function( $value ) {
+                        return $this->validateValue( $value );
+                    } );
+                }
+                return $helper->ask( $input, $output, $question ) ?? '';
                 break;
         }
     }

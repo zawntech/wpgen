@@ -1,7 +1,7 @@
 <?php
 namespace {{ plugin_namespace }}\Admin;
 
-use {{ plugin_namespace }}\Admin\Abstract\AdminSettingsPageContainer;
+use {{ plugin_namespace }}\Admin\AdminSettingsPageContainer;
 
 class AdminComponent
 {

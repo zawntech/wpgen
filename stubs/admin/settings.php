@@ -1,14 +1,14 @@
 <?php
 namespace {{ plugin_namespace }}\Admin;
 
-use {{ plugin_namespace }}\Admin\Abstract\AbstractSettings;
+use {{ plugin_namespace }}\Abstract\SettingsAbstract;
 
 /**
  * {{ plugin_name }} Settings.
  *
  * Class Settings
  */
-class Settings extends AbstractSettings
+class Settings extends SettingsAbstract
 {
     const OPTION_KEY = '{{ plugin_constants_prefix }}SETTINGS';
 

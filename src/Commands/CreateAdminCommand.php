@@ -103,19 +103,19 @@ class CreateAdminCommand extends Command
      */
     protected function execute( InputInterface $input, OutputInterface $output ) {
 
-        // Output path.
-        $component_path = getcwd()  . '/src/Admin/';
+        // Output paths.
+        $component_path = getcwd() . '/src/Admin/';
         if ( ! is_dir( $component_path ) ) {
             mkdir( $component_path );
         }
 
-        $abstract_path = $component_path . '/Abstract/';
-        if ( ! is_dir( $abstract_path ) ) {
-            mkdir( $abstract_path, 0755, true );
+        $src_abstract_path = getcwd() . '/src/Abstract/';
+        if ( ! is_dir( $src_abstract_path ) ) {
+            mkdir( $src_abstract_path, 0755, true );
         }
 
         $tab_namespace = $this->options['settings_page_namespace']['value'];
-        $tab_path = $component_path . '/Tabs/' . $tab_namespace . '/';
+        $tab_path = $component_path . 'Tabs/' . $tab_namespace . '/';
         if ( ! is_dir( $tab_path ) ) {
             mkdir( $tab_path, 0755, true );
         }
@@ -124,47 +124,26 @@ class CreateAdminCommand extends Command
 
         if ( $this->adminComponentExists ) {
             // Subsequent run: only generate the new tab file.
-            $files = [
-                [
-                    'source' => 'admin-main-settings-tab.php',
-                    'target' => 'Tabs/' . $tab_namespace . '/MainSettingsTab.php',
-                ]
-            ];
-
-            $this->processFiles( $stub_path, $component_path, $files );
+            $this->processFiles( $stub_path, $component_path, [
+                ['source' => 'admin-main-settings-tab.php', 'target' => 'Tabs/' . $tab_namespace . '/MainSettingsTab.php'],
+            ]);
 
             // Append settings page registration to existing AdminComponent.
             $this->appendSettingsPageToAdminComponent( $output, $component_path );
         } else {
-            // First run: generate all files.
-            $files = [
-                [
-                    'source' => 'admin-component.php',
-                    'target' => 'AdminComponent.php'
-                ],
-                [
-                    'source' => 'admin-settings-page.php',
-                    'target' => 'Abstract/AdminSettingsPageContainer.php',
-                ],
-                [
-                    'source' => 'admin-settings-page-tab-abstract.php',
-                    'target' => 'Abstract/AdminSettingsPageTabAbstract.php',
-                ],
-                [
-                    'source' => 'admin-main-settings-tab.php',
-                    'target' => 'Tabs/' . $tab_namespace . '/MainSettingsTab.php',
-                ],
-                [
-                    'source' => 'abstract-settings.php',
-                    'target' => 'Abstract/AbstractSettings.php',
-                ],
-                [
-                    'source' => 'settings.php',
-                    'target' => 'Settings.php',
-                ]
-            ];
+            // First run: generate files into src/Admin/.
+            $this->processFiles( $stub_path, $component_path, [
+                ['source' => 'admin-component.php',        'target' => 'AdminComponent.php'],
+                ['source' => 'admin-settings-page.php',    'target' => 'AdminSettingsPageContainer.php'],
+                ['source' => 'settings.php',               'target' => 'Settings.php'],
+                ['source' => 'admin-main-settings-tab.php','target' => 'Tabs/' . $tab_namespace . '/MainSettingsTab.php'],
+            ]);
 
-            $this->processFiles( $stub_path, $component_path, $files );
+            // Generate abstract base classes into src/Abstract/.
+            $this->processFiles( $stub_path, $src_abstract_path, [
+                ['source' => 'admin-settings-page-tab-abstract.php', 'target' => 'AdminSettingsPageTabAbstract.php'],
+                ['source' => 'abstract-settings.php',                'target' => 'SettingsAbstract.php'],
+            ]);
         }
 
         return 0;

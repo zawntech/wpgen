@@ -5,7 +5,6 @@ namespace WPGen\Commands;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use WPGen\Commands\Traits\CheckIfComponentAlreadyExists;
 use WPGen\Commands\Traits\CheckWorkingDirectory;
 use WPGen\Commands\Traits\LoadOptions;
 use WPGen\Commands\Traits\ProcessStubFiles;
@@ -13,23 +12,22 @@ use WPGen\Commands\Traits\QueryOptions;
 use WPGen\Commands\Traits\RegisterClassInConstructor;
 use WPGen\Config;
 
-class ComponentTaxonomyCommand extends Command
+class ComponentAjaxControllerCommand extends Command
 {
     use LoadOptions,
         ProcessStubFiles,
-        CheckIfComponentAlreadyExists,
         CheckWorkingDirectory,
         QueryOptions,
         RegisterClassInConstructor;
 
     protected $options = [];
 
-    protected static $defaultName = 'component:taxonomy';
+    protected static $defaultName = 'component:ajax-controller';
 
     protected function configure() {
         $this
-            ->setDescription( 'Add a custom taxonomy to a component.' )
-            ->setHelp( 'Add a custom taxonomy to a component.' );
+            ->setDescription( 'Add an AJAX controller to a component.' )
+            ->setHelp( 'Generates an AjaxControllerAbstract base class and a concrete AJAX controller extending it.' );
         $this->loadPluginOptions();
     }
 
@@ -38,40 +36,36 @@ class ComponentTaxonomyCommand extends Command
             $output->writeln( ['<error>Command must be run from within a component directory.</error>'] );
         }
 
-        // Query options.
-        $options = Config::get()->taxonomyOptions();
-        $this->querySecondaryOptions( $input, $output, $options );
+        $options = Config::get()->ajaxControllerOptions();
+        $this->queryOptions( $input, $output, $options );
+        $this->confirmOptions( $input, $output, $options );
+        $this->mergeOptions( $options );
     }
 
     public function execute( InputInterface $input, OutputInterface $output ) {
 
-        $stub_path = APP_ROOT . 'stubs/taxonomies/';
-        $abstract_stub_path = APP_ROOT . 'stubs/taxonomies/abstract/';
-        $abstract_dir = dirname( getcwd() ) . '/Abstract/';
-
         $this->options['component_name'] = ['value' => $this->getComponentName()];
-        $singular = $this->options['taxonomy_singular']['value'];
 
-        // Generate abstract base class into src/Abstract/ (skips if already exists).
+        $stub_path          = APP_ROOT . 'stubs/ajax-controller/';
+        $abstract_stub_path = APP_ROOT . 'stubs/ajax-controller/abstract/';
+        $abstract_dir       = dirname( getcwd() ) . '/Abstract/';
+
+        $controller_class = $this->options['controller_class']['value'];
+
+        // Generate AjaxControllerAbstract into src/Abstract/ (skips if already exists).
         if ( !file_exists( $abstract_dir ) ) {
             mkdir( $abstract_dir, 0755, true );
         }
         $this->processFiles( $abstract_stub_path, $abstract_dir, [
-            ['source' => 'abstract-taxonomy.php', 'target' => 'AbstractTaxonomy.php'],
+            ['source' => 'abstract-ajax-controller.php', 'target' => 'AjaxControllerAbstract.php'],
         ]);
 
+        // Generate the concrete controller into the component directory.
         $this->processFiles( $stub_path, getcwd() . '/', [
-            ['source' => 'taxonomy.php', 'target' => $singular . 'Taxonomy.php'],
+            ['source' => 'ajax-controller.php', 'target' => $controller_class . 'AjaxController.php'],
         ]);
 
-        // Register post type.
-        $file = $this->getComponentName() . 'Component.php';
-        $path = getcwd() . '/' . $file;
-        if ( !file_exists( $path ) ) {
-            $output->writeln( ["<error>$file not found.</error>."] );
-        }
-
-        $this->addToComponentConstructor( $input, $output, $singular . 'Taxonomy' );
+        $this->addToComponentConstructor( $input, $output, $controller_class . 'AjaxController' );
 
         return 0;
     }
