@@ -4,6 +4,7 @@ namespace {{ plugin_namespace }}\Admin\Tabs\{{ settings_page_namespace }};
 use {{ plugin_namespace }}\Admin\Settings;
 use {{ plugin_namespace }}\Admin\Abstract\AdminSettingsPageTabAbstract;
 use AllegedWizard\WPAdminOptions\Fields\InputOption;
+use AllegedWizard\WPAdminOptions\Structure\OptionsContainer;
 
 /**
  * And example settings page tab.
@@ -20,15 +21,19 @@ class MainSettingsTab extends AdminSettingsPageTabAbstract
         $settings = Settings::get();
         ?>
         <form method="post">
-            <table class="form-table">
-                <?php
-                new InputOption([
-                    'key' => 'example_option',
-                    'label' => 'Example Option',
-                    'value' => $settings->example_option()
-                ]);
-                ?>
-            </table>
+            <?php
+            new OptionsContainer([
+                'key'   => 'main',
+                'title' => 'Main Settings',
+                'fields' => function() use ( $settings ) {
+                    new InputOption([
+                        'key'   => 'example_option',
+                        'label' => 'Example Option',
+                        'value' => $settings->example_option()
+                    ]);
+                }
+            ]);
+            ?>
             <?php $this->nonce_field(); ?>
             <button type="submit" class="button button-primary">Save</button>
         </form>

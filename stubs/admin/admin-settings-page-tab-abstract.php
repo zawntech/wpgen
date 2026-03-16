@@ -49,9 +49,7 @@ abstract class AdminSettingsPageTabAbstract
         $values = [];
         foreach( $keys as $key ) {
             if ( isset( $_POST[$key] ) ) {
-                $value = $_POST[$key];
-                $value = stripslashes( $value );
-                $value = filter_var( $value, FILTER_SANITIZE_STRING );
+                $value = sanitize_text_field( wp_unslash( $_POST[$key] ) );
                 $values[$key] = $value;
             }
         }

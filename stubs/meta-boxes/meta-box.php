@@ -68,7 +68,7 @@ class {{ meta_box_class }}MetaBox
 
         foreach( $keys as $key ) {
             if ( isset( $_POST[$key] ) ) {
-                $value = filter_var( $_POST[$key], FILTER_SANITIZE_STRING );
+                $value = sanitize_text_field( wp_unslash( $_POST[$key] ) );
                 update_post_meta( $post_id, $key, $value );
             }
         }

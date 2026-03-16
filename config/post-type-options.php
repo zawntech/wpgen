@@ -23,5 +23,12 @@ return [
         'label' => 'Post Type Slug',
         'description' => 'Post type slug rewrite. Leave empty for no rewrite. ie: books',
         'type' => 'string'
+    ],
+    [
+        'key' => 'create_list_table',
+        'label' => 'Create List Table',
+        'description' => 'Generate a post type list table filter class.',
+        'type' => 'boolean',
+        'value' => true,
     ]
 ];

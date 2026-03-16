@@ -11,6 +11,7 @@
   "require": {
     "allegedwizard/wp-admin-options": "dev-dev"
   },
+  "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
       "{{ plugin_namespace }}\\": "src/"
