@@ -5,5 +5,5 @@ use {{ plugin_namespace }}\Abstract\AbstractPostTypeListTable;
 
 class {{ post_type_singular }}PostTypeListTableFilter extends AbstractPostTypeListTable
 {
-    protected $post_types = ['{{ post_type_key }}'];
+    protected $post_types = [{{ post_type_singular }}PostType::KEY];
 }

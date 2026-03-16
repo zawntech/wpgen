@@ -1,6 +1,8 @@
 <?php
 namespace {{ plugin_namespace }}\Admin;
 
+use {{ plugin_namespace }}\Abstract\AbstractAdminSettingsPageTab;
+
 /**
  * {{ plugin_name }} Admin settings page container.
  * A container for settings page 'Tabs'.
@@ -102,7 +104,7 @@ class AdminSettingsPageContainer
             ];
         }
 
-        $submenu[$this->slug] = $items;
+        $submenu[$this->slug] = apply_filters( '{{ plugin_filter_prefix }}admin_settings_submenu', $items, $this->slug );
     }
 
     /**
