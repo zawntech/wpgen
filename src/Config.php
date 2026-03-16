@@ -112,13 +112,6 @@ class Config
         return $this->loadConfigFile( 'admin-options' );
     }
 
-    public function apiOptions() {
-        return $this->loadConfigFile( 'api-options' );
-    }
-
-    public function apiResourceControllerOptions() {
-        return $this->loadConfigFile( 'api-resource-controller-options' );
-    }
 
     public function componentApiOptions() {
         return $this->loadConfigFile( 'component-api-options' );

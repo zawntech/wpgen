@@ -1,9 +1,9 @@
 <?php
 namespace {{ plugin_namespace }}\{{ component_name }};
 
-use {{ plugin_namespace }}\Abstract\AjaxControllerAbstract;
+use {{ plugin_namespace }}\Abstract\AbstractAjaxController;
 
-class {{ controller_class }}AjaxController extends AjaxControllerAbstract
+class {{ controller_class }}AjaxController extends AbstractAjaxController
 {
     const EXAMPLE_ACTION = '{{ plugin_filter_prefix }}example_action';
 

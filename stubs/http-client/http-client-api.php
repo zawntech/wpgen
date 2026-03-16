@@ -1,9 +1,9 @@
 <?php
 namespace {{ plugin_namespace }}\{{ component_name }};
 
-use {{ plugin_namespace }}\Abstract\HttpClientAbstract;
+use {{ plugin_namespace }}\Abstract\AbstractHttpClient;
 
-class {{ api_class }}Api extends HttpClientAbstract
+class {{ api_class }}Api extends AbstractHttpClient
 {
     protected function get_api_base_url(): string {
         return 'https://example.com/api/';

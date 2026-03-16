@@ -1,7 +1,7 @@
 <?php
 namespace {{ plugin_namespace }}\Abstract;
 
-abstract class AjaxControllerAbstract
+abstract class AbstractAjaxController
 {
     /**
      * Verifies a nonce token; sends JSON error 401 if invalid.

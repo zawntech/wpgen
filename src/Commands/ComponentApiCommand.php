@@ -20,7 +20,7 @@ class ComponentApiCommand extends Command
 
     protected $options = [];
 
-    protected static $defaultName = 'component:api';
+    protected static $defaultName = 'component:http-api';
 
     protected function configure() {
         $this
@@ -55,7 +55,7 @@ class ComponentApiCommand extends Command
             mkdir( $abstract_dir, 0755, true );
         }
         $this->processFiles( $abstract_stub_path, $abstract_dir, [
-            ['source' => 'abstract-http-client.php', 'target' => 'HttpClientAbstract.php'],
+            ['source' => 'abstract-http-client.php', 'target' => 'AbstractHttpClient.php'],
         ]);
 
         // Generate the concrete API client into the component directory.

@@ -141,8 +141,8 @@ class CreateAdminCommand extends Command
 
             // Generate abstract base classes into src/Abstract/.
             $this->processFiles( $stub_path, $src_abstract_path, [
-                ['source' => 'admin-settings-page-tab-abstract.php', 'target' => 'AdminSettingsPageTabAbstract.php'],
-                ['source' => 'abstract-settings.php',                'target' => 'SettingsAbstract.php'],
+                ['source' => 'admin-settings-page-tab-abstract.php', 'target' => 'AbstractAdminSettingsPageTab.php'],
+                ['source' => 'abstract-settings.php',                'target' => 'AbstractSettings.php'],
             ]);
         }
 

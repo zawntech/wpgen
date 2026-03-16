@@ -1,7 +1,7 @@
 <?php
 namespace {{ plugin_namespace }}\Abstract;
 
-abstract class HttpClientAbstract
+abstract class AbstractHttpClient
 {
     /**
      * Return the base URL for the API.

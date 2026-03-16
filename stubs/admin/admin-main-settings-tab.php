@@ -2,7 +2,7 @@
 namespace {{ plugin_namespace }}\Admin\Tabs\{{ settings_page_namespace }};
 
 use {{ plugin_namespace }}\Admin\Settings;
-use {{ plugin_namespace }}\Abstract\AdminSettingsPageTabAbstract;
+use {{ plugin_namespace }}\Abstract\AbstractAdminSettingsPageTab;
 use AllegedWizard\WPAdminOptions\Fields\InputOption;
 use AllegedWizard\WPAdminOptions\Structure\OptionsContainer;
 
@@ -11,7 +11,7 @@ use AllegedWizard\WPAdminOptions\Structure\OptionsContainer;
  *
  * Class MainSettingsTab
  */
-class MainSettingsTab extends AdminSettingsPageTabAbstract
+class MainSettingsTab extends AbstractAdminSettingsPageTab
 {
     public $key = 'main';
 

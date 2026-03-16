@@ -57,7 +57,7 @@ class ComponentAjaxControllerCommand extends Command
             mkdir( $abstract_dir, 0755, true );
         }
         $this->processFiles( $abstract_stub_path, $abstract_dir, [
-            ['source' => 'abstract-ajax-controller.php', 'target' => 'AjaxControllerAbstract.php'],
+            ['source' => 'abstract-ajax-controller.php', 'target' => 'AbstractAjaxController.php'],
         ]);
 
         // Generate the concrete controller into the component directory.

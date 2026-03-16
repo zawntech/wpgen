@@ -3,7 +3,7 @@ namespace {{ plugin_namespace }}\Abstract;
 
 use {{ plugin_namespace }}\Admin\Settings;
 
-abstract class AdminSettingsPageTabAbstract
+abstract class AbstractAdminSettingsPageTab
 {
     public $key = '';
 

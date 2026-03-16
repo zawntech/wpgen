@@ -34,7 +34,7 @@ class AdminSettingsPageContainer
     public $capability;
 
     /**
-     * @var AdminSettingsPageTabAbstract[]
+     * @var AbstractAdminSettingsPageTab[]
      */
     public $tabs;
 
@@ -44,7 +44,7 @@ class AdminSettingsPageContainer
      *     @type string $slug        Page slug.
      *     @type string $parent_slug Parent menu slug for submenu pages.
      *     @type string $capability  Required capability. Default 'manage_options'.
-     *     @type AdminSettingsPageTabAbstract[] $tabs Array of tab instances.
+     *     @type AbstractAdminSettingsPageTab[] $tabs Array of tab instances.
      * }
      */
     public function __construct( $options = [] ) {
@@ -117,7 +117,7 @@ class AdminSettingsPageContainer
     }
 
     /**
-     * @return AdminSettingsPageTabAbstract|null
+     * @return AbstractAdminSettingsPageTab|null
      */
     public function get_current_tab_instance() {
         if ( empty( $this->tabs ) ) {
