@@ -3,6 +3,7 @@
 ## 2026-03-16
 
 ### Added
+- `create:theme-component` command — generates `src/Theme/Theme.php` with static template-part resolution helpers and creates `assets/templates/` recursively. Uses `{{ plugin_filter_prefix }}` for the WP filter hook and debug CSS class, and `{{ plugin_text_domain }}` for the theme override path.
 - `AbstractMetaBox` — generated into `src/Abstract/` by `component:meta-box`. Provides `POST_TYPES` constant, `stringy_keys`/`json_keys` arrays, `sanitize_string()`, constructor that registers `add_meta_boxes_*` and `save_post_*` hooks, and nonce helpers (`nonce_field`, `verify_nonce`, `get_nonce_key`, `get_nonce_action`).
 - `AbstractMetaBox::render_meta_box()` calls overrideable `render()` then appends `nonce_field()` automatically — prevents accidental omission in subclasses.
 - `component:meta-box` now scans the CWD for `*PostType.php` and infers `post_type_class` from the file containing `const KEY`. Shown as an info message; prompt is skipped when inferred.
