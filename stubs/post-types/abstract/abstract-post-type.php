@@ -90,7 +90,7 @@ abstract class AbstractPostType
             'publicly_queryable'  => true,
             'show_in_rest'        => false,
             'capability_type'     => 'post',
-            'map_meta_cap'        => false,
+            'map_meta_cap'        => true,
             'query_var'           => true,
             'delete_with_user'    => null,
             'menu_icon'           => '',

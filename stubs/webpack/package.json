@@ -1,0 +1,24 @@
+{
+  "name": "{{ plugin_text_domain }}",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "build": "npx webpack --mode=production",
+    "dev": "npx webpack --mode=development --watch"
+  },
+  "author": "{{ plugin_author }}",
+  "license": "GPLv3",
+  "dependencies": {
+    "@babel/core": "^7.27.1",
+    "@babel/preset-react": "^7.27.1",
+    "babel-loader": "^10.0.0",
+    "css-loader": "^7.1.1",
+    "glob": "^8.1.0",
+    "mini-css-extract-plugin": "^2.10.1",
+    "sass": "^1.77.8",
+    "sass-loader": "^16.0.7",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^5.1.4"
+  }
+}

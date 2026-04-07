@@ -7,18 +7,6 @@ return [
         'type' => 'string'
     ],
     [
-        'key' => 'module_dir',
-        'label' => 'Module Directory Name',
-        'description' => 'The directory name of the custom module; ie: custom-slider',
-        'type' => 'string'
-    ],
-    [
-        'key' => 'module_class',
-        'label' => 'Module Class Name',
-        'description' => 'The class name of the custom module; ie: CustomSlider',
-        'type' => 'string'
-    ],
-    [
         'key' => 'module_description',
         'label' => 'Module Description',
         'description' => 'The module description',

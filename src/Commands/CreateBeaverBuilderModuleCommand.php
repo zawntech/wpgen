@@ -42,6 +42,7 @@ class CreateBeaverBuilderModuleCommand extends Command
         // Query options.
         $options = Config::get()->bbModuleOptions();
         $this->queryOptions( $input, $output, $options );
+        $this->inferModuleIdentifiers( $options );
         $this->confirmOptions( $input, $output, $options );
         $this->mergeOptions( $options );
 
@@ -69,7 +70,28 @@ class CreateBeaverBuilderModuleCommand extends Command
         return 0;
     }
 
-    ////////////////////////////////////////////
+    protected function inferModuleIdentifiers( &$options ) {
+        $module_name = '';
+        foreach ( $options as &$opt ) {
+            if ( $opt['key'] === 'module_name' ) {
+                $module_name = $opt['value'];
+            }
+        }
+
+        $options[] = [
+            'key' => 'module_dir',
+            'label' => 'Module Directory Name',
+            'value' => strtolower( str_replace( ' ', '-', $module_name ) ),
+            'type' => 'string',
+        ];
+
+        $options[] = [
+            'key' => 'module_class',
+            'label' => 'Module Class Name',
+            'value' => str_replace( ' ', '', ucwords( $module_name ) ),
+            'type' => 'string',
+        ];
+    }
 
     public function registerModule( InputInterface $input, OutputInterface $output ) {
 
@@ -166,18 +188,10 @@ class CreateBeaverBuilderModuleCommand extends Command
                 'target' => 'includes/frontend.js.php'
             ],
 
-            // Sass compiler
-            [
-                'source' => 'build-scss.js',
-                'target' => '../../assets/scripts/build-scss.js',
-            ],
-            [
-                'source' => 'package.json',
-                'target' => '../../package.json',
-            ],
+            // Variables (shared with webpack-compiled assets)
             [
                 'source' => '_variables.scss',
-                'target' => '../../assets/sass/_variables.scss'
+                'target' => 'css/_variables.scss'
             ]
         ];
 
@@ -213,8 +227,6 @@ class CreateBeaverBuilderModuleCommand extends Command
             'js',
             'css',
             'includes',
-            '../../assets/scripts',
-            '../../assets/sass',
         ];
 
         foreach ( $dirs as $dir ) {

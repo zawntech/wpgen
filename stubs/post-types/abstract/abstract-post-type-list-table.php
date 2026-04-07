@@ -4,6 +4,9 @@ namespace {{ plugin_namespace }}\Abstract;
 abstract class AbstractPostTypeListTable
 {
     protected $post_types = [];
+    protected $columns = [];
+    protected $unset_columns = [];
+    protected $sortable_columns = [];
 
     public function __construct() {
         foreach( $this->post_types as $post_type ) {
@@ -19,21 +22,25 @@ abstract class AbstractPostTypeListTable
     }
 
     public function columns( $columns ) {
-        $columns['_custom_column'] = 'Custom Column';
+        $columns = array_merge( $columns, $this->columns );
+        foreach( $this->unset_columns as $column ) {
+            unset( $columns[$column] );
+        }
         return $columns;
     }
 
     public function sortable_columns( $columns ) {
-        // $columns['_custom_column'] = 'xyz';
-        return $columns;
+        return array_merge( $columns, $this->sortable_columns );
     }
 
     public function column_content( $column_name, $post_id ) {
-        switch ( $column_name ) {
-            case '_custom_column':
-                // Do something...
-                break;
+        $method = 'render_' . ltrim( $column_name, '_' );
+
+        if ( ! method_exists( $this, $method ) ) {
+            throw new \BadMethodCallException( "No render method found for column '{$column_name}'. Expected method: {$method}()" );
         }
+
+        $this->$method( $post_id );
     }
 
     public function orderby( \WP_Query $query ) {
@@ -43,10 +50,17 @@ abstract class AbstractPostTypeListTable
 
         $orderby = $query->get( 'orderby' );
 
-        // if ( 'xyz' == $orderby ) {
-        //     $query->set('meta_key','xyz');
-        //     $query->set('orderby','meta_value_num');
-        // }
+        if ( empty( $orderby ) ) {
+            return;
+        }
+
+        $method = 'orderby_' . ltrim( $orderby, '_' );
+
+        if ( ! method_exists( $this, $method ) ) {
+            return;
+        }
+
+        $this->$method( $query );
     }
 
     public function custom_filters( $post_type ) {

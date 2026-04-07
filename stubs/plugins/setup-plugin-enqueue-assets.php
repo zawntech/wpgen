@@ -25,10 +25,40 @@ class EnqueueAssets
     /** Enqueue admin assets. */
     public function admin() {
         $plugin_version = $this->get_plugin_version();
+
+        wp_enqueue_style(
+            '{{ plugin_text_domain }}-admin',
+            {{ plugin_constants_prefix }}URL . 'assets/build/{{ plugin_text_domain }}.admin.css',
+            [],
+            $plugin_version
+        );
+
+        wp_enqueue_script(
+            '{{ plugin_text_domain }}-admin',
+            {{ plugin_constants_prefix }}URL . 'assets/build/{{ plugin_text_domain }}.admin.js',
+            [],
+            $plugin_version,
+            true
+        );
     }
 
     /** Enqueue frontend assets. */
     public function frontend() {
         $plugin_version = $this->get_plugin_version();
+
+        wp_enqueue_style(
+            '{{ plugin_text_domain }}-frontend',
+            {{ plugin_constants_prefix }}URL . 'assets/build/{{ plugin_text_domain }}.frontend.css',
+            [],
+            $plugin_version
+        );
+
+        wp_enqueue_script(
+            '{{ plugin_text_domain }}-frontend',
+            {{ plugin_constants_prefix }}URL . 'assets/build/{{ plugin_text_domain }}.frontend.js',
+            [],
+            $plugin_version,
+            true
+        );
     }
 }

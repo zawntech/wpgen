@@ -38,19 +38,49 @@ class ComponentPostTypeListTableCommand extends Command
             $output->writeln( ['<error>Command must be run from within a component directory.</error>'] );
         }
 
-        // Query options.
         $options = Config::get()->postTypeListTableOptions();
+
+        // Try to infer the singular post type name from a *PostType.php file in the CWD.
+        $inferred = $this->inferPostTypeSingular( getcwd() );
+        if ( $inferred ) {
+            foreach ( $options as &$option ) {
+                if ( $option['key'] === 'post_type_singular' ) {
+                    $option['value'] = $inferred;
+                    $output->writeln( "<info>Inferred post type: {$inferred}</info>" );
+                    break;
+                }
+            }
+            unset( $option );
+        }
+
         $this->queryOptions( $input, $output, $options );
         $this->confirmOptions( $input, $output, $options );
         $this->mergeOptions( $options );
     }
 
+    protected function inferPostTypeSingular( $dir ) {
+        foreach ( glob( $dir . '/*PostType.php' ) as $file ) {
+            return str_replace( 'PostType.php', '', basename( $file ) );
+        }
+        return null;
+    }
+
     public function execute( InputInterface $input, OutputInterface $output ) {
 
         $this->options['component_name'] = ['value' => $this->getComponentName()];
-        $stub_path = APP_ROOT . 'stubs/post-types/';
+        $stub_path          = APP_ROOT . 'stubs/post-types/';
+        $abstract_stub_path = APP_ROOT . 'stubs/post-types/abstract/';
+        $abstract_dir       = dirname( getcwd() ) . '/Abstract/';
 
         $singular = $this->options['post_type_singular']['value'];
+
+        if ( !file_exists( $abstract_dir ) ) {
+            mkdir( $abstract_dir, 0755, true );
+        }
+
+        $this->processFiles( $abstract_stub_path, $abstract_dir, [
+            ['source' => 'abstract-post-type-list-table.php', 'target' => 'AbstractPostTypeListTable.php'],
+        ]);
 
         $files = [
             [

@@ -1,5 +1,25 @@
 # Changelog
 
+## 2026-04-06
+
+### Added
+- `create:webpack` command — scaffolds `webpack.config.js`, `package.json`, and starter asset files (`assets/js/src/frontend/index.js`, `assets/js/src/admin/index.js`, `assets/sass/frontend.scss`, `assets/sass/admin.scss`, `assets/sass/_variables.scss`) for existing plugins.
+- `create:plugin` now automatically scaffolds webpack configuration and asset directories alongside the plugin files.
+- Webpack config auto-discovers `bb-modules/` SCSS files and compiles them in-place, with a `CleanBbModulesPlugin` that removes empty JS stubs and empty CSS files.
+- Separate frontend and admin build entry points — outputs to `assets/build/{text-domain}.frontend.{js,css}` and `assets/build/{text-domain}.admin.{js,css}`.
+- JS entry points structured as modules: `assets/js/src/frontend/index.js` and `assets/js/src/admin/index.js`.
+- `EnqueueAssets` stub now wires up `wp_enqueue_style` and `wp_enqueue_script` for both frontend and admin webpack bundles.
+
+### Changed
+- `create:bb-module` no longer copies `build-scss.js`, `package.json`, or creates `assets/scripts/` — webpack handles SCSS compilation.
+- `create:bb-module` now auto-derives `module_dir` (kebab-case) and `module_class` (PascalCase) from the module name, reducing prompts from 6 to 4.
+- SCSS stubs use `@use` instead of deprecated `@import` syntax.
+- `component:post-type-list-table` now infers the post type singular name from `*PostType.php` in the CWD, removing the `post_type_key` prompt.
+- `component:post-type-list-table` now generates `AbstractPostTypeListTable` into `src/Abstract/` if it doesn't exist.
+- `AbstractPostTypeListTable` refactored — `columns()`, `sortable_columns()`, and `column_content()` are now driven by `$columns`, `$unset_columns`, and `$sortable_columns` arrays with convention-based `render_{column}()` and `orderby_{column}()` methods instead of switch statements and commented-out examples.
+- `AbstractPostType` default `map_meta_cap` changed from `false` to `true`.
+- Concrete `PostTypeListTableFilter` stub now declares `$columns`, `$unset_columns`, and `$sortable_columns` property overrides.
+
 ## 2026-03-16
 
 ### Added

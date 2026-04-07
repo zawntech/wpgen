@@ -63,6 +63,10 @@ class CreatePluginCommand extends Command
             mkdir( $path );
             mkdir( $path . '/src' );
             mkdir( $path . '/src/Setup' );
+            mkdir( $path . '/assets/js/src/frontend', 0775, true );
+            mkdir( $path . '/assets/js/src/admin', 0775, true );
+            mkdir( $path . '/assets/sass', 0775, true );
+            mkdir( $path . '/assets/build', 0775, true );
         }
 
         $target_path = $path . '/';
@@ -108,6 +112,39 @@ class CreatePluginCommand extends Command
         // Replace
         $this->processFiles( $stub_path, $target_path, $files );
 
+        // Webpack configuration and asset stubs.
+        $webpack_stub_path = APP_ROOT . 'stubs/webpack/';
+        $webpack_files = [
+            [
+                'source' => 'webpack.config.js',
+                'target' => 'webpack.config.js',
+            ],
+            [
+                'source' => 'package.json',
+                'target' => 'package.json',
+            ],
+            [
+                'source' => 'frontend-index.js',
+                'target' => 'assets/js/src/frontend/index.js',
+            ],
+            [
+                'source' => 'admin-index.js',
+                'target' => 'assets/js/src/admin/index.js',
+            ],
+            [
+                'source' => 'frontend.scss',
+                'target' => 'assets/sass/frontend.scss',
+            ],
+            [
+                'source' => 'admin.scss',
+                'target' => 'assets/sass/admin.scss',
+            ],
+            [
+                'source' => '_variables.scss',
+                'target' => 'assets/sass/_variables.scss',
+            ],
+        ];
+        $this->processFiles( $webpack_stub_path, $target_path, $webpack_files );
 
         // Store config
         $options = array_map( function( $opt ) {
