@@ -50,7 +50,7 @@ abstract class AbstractPostTypeListTable
 
         $orderby = $query->get( 'orderby' );
 
-        if ( empty( $orderby ) ) {
+        if ( empty( $orderby ) || ! is_string( $orderby ) ) {
             return;
         }
 

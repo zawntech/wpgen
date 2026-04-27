@@ -21,6 +21,14 @@ trait RegisterClassInConstructor
         $path = $cwd. '/' . $file;
         $contents = file_get_contents( $path );
 
+        // Idempotency guard: skip if the class is already registered in this
+        // component's constructor. Without this, re-running a component:*
+        // command appends a duplicate `new $class;` line.
+        if ( false !== strpos( $contents, "new {$class};" ) ) {
+            $output->writeln( ["<info>{$class} is already registered in {$file}.</info>"] );
+            return;
+        }
+
         // Extract the 'register_components() { ... }' section of the code.
         $start = strpos( $contents, '__construct() {' );
 

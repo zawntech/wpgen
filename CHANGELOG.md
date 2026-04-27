@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-04-27
+
+### Added
+- `component:user-list-table` command -- generates `AbstractUserListTable` into `src/Abstract/` and a concrete `UserListTable.php` into the component, then registers it in the component constructor. Mirrors `component:post-type-list-table` for the wp-admin Users page (`users.php`).
+- `AbstractUserListTable` stub -- hooks `manage_users_columns`, `manage_users_sortable_columns`, `manage_users_custom_column`, `pre_get_users`, and `restrict_manage_users`. Convention-based `render_{column}()` and `orderby_{column}()` methods, plus overridable `render_filters()` / `process_filters()` extension points. Includes a column whitelist guard (necessary because `manage_users_custom_column` is a single global filter, not post-type-scoped) and an `applies()` check against `?role=` for role-scoped customizations.
+- `AbstractUserListTable::restrict_manage_users` wrapper closes core's `.alignleft.actions` div, renders filter UI in a sibling div, and reopens an empty one for core's trailing `</div>` to match -- yielding distinct inline-block groups so plugin filter UI doesn't visually merge with the "Change role" controls.
+- `UserListTable.php` concrete stub -- demonstrates every extension point: two columns with renderers, one sortable column with `orderby_*`, role scoping (commented example), `unset_columns`, plus a working filter dropdown wired to a `meta_query` via `process_filters()`.
+- `create:email` command -- generates an Emails subsystem: `src/Abstract/AbstractEmail.php`, `src/Emails/EmailsComponent.php`, `src/Emails/ExampleEmail.php`, `assets/templates/emails/_layout.php`, and `assets/templates/emails/example.php`. Registers `Emails\EmailsComponent` in the main plugin class.
+- `AbstractEmail` stub -- transactional email base class with `subject()` and `template()` abstract methods, configurable `from_name()` / `from_address()` / `headers()`, and a `render()` flow that wraps the body template with `_layout.php`.
+- Email layout stub uses a text-based site-name header (no logo image), neutral grey/blue palette, and generic placeholder copy so the developer customizes from a clean slate.
+- `CreateEmailCommand` prints per-file `Created:` vs `Preserved (already exists):` so re-runs make it visible exactly which files were generated and which were left alone.
+
+### Fixed
+- `RegisterClassInConstructor::addToComponentConstructor` is now idempotent -- guards against appending duplicate `new $class;` lines when a `component:*` command is re-run. Mirrors the existing guard in `RegisterComponentInMainClass`. Affects every `component:*` command that registers a class in a component constructor.
+- `AbstractPostTypeListTable::orderby` stub now also checks `is_string($orderby)` before calling `ltrim()` -- defends against `WP_Query` setting `orderby` to an array (e.g. multi-column ordering), which would otherwise trigger a TypeError.
+
 ## 2026-04-06
 
 ### Added
