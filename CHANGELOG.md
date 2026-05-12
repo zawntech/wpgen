@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-05-12
+
+### Added
+- `assets/scripts/build-zip.js` stub -- node script that reads the version header from the main plugin file and writes `{plugin-dir}-{version}.zip` to the parent directory, excluding `node_modules`, dotfiles, and dot-dirs. Uses `archiver` for streaming zip creation. Filename derives from `path.basename(pluginRoot)` so it stays correct if the plugin folder is renamed.
+- `buildZip` npm script in the webpack `package.json` stub -- runs `npm run build && node assets/scripts/build-zip.js`.
+- `archiver ^7.0.1` added to the webpack stub's dependencies.
+- `assets/scripts/` directory now created by both `create:plugin` and `create:webpack`.
+
+### Changed
+- `create:plugin` and `create:webpack` both emit `assets/scripts/build-zip.js` (the stub lives under `stubs/webpack/` since it is bundled with the webpack package.json that declares its dependency and npm script).
+
 ## 2026-04-27
 
 ### Added

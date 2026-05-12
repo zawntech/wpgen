@@ -54,6 +54,7 @@ class CreateWebpackCommand extends Command
             'assets/js/src/admin',
             'assets/sass',
             'assets/build',
+            'assets/scripts',
         ];
 
         foreach ( $dirs as $dir ) {
@@ -96,6 +97,10 @@ class CreateWebpackCommand extends Command
             [
                 'source' => '_variables.scss',
                 'target' => 'assets/sass/_variables.scss',
+            ],
+            [
+                'source' => 'build-zip.js',
+                'target' => 'assets/scripts/build-zip.js',
             ],
         ];
 

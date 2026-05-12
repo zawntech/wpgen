@@ -67,6 +67,7 @@ class CreatePluginCommand extends Command
             mkdir( $path . '/assets/js/src/admin', 0775, true );
             mkdir( $path . '/assets/sass', 0775, true );
             mkdir( $path . '/assets/build', 0775, true );
+            mkdir( $path . '/assets/scripts', 0775, true );
         }
 
         $target_path = $path . '/';
@@ -142,6 +143,10 @@ class CreatePluginCommand extends Command
             [
                 'source' => '_variables.scss',
                 'target' => 'assets/sass/_variables.scss',
+            ],
+            [
+                'source' => 'build-zip.js',
+                'target' => 'assets/scripts/build-zip.js',
             ],
         ];
         $this->processFiles( $webpack_stub_path, $target_path, $webpack_files );

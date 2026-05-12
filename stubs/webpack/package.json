@@ -4,13 +4,15 @@
   "description": "",
   "scripts": {
     "build": "npx webpack --mode=production",
-    "dev": "npx webpack --mode=development --watch"
+    "dev": "npx webpack --mode=development --watch",
+    "buildZip": "npm run build && node assets/scripts/build-zip.js"
   },
   "author": "{{ plugin_author }}",
   "license": "GPLv3",
   "dependencies": {
     "@babel/core": "^7.27.1",
     "@babel/preset-react": "^7.27.1",
+    "archiver": "^7.0.1",
     "babel-loader": "^10.0.0",
     "css-loader": "^7.1.1",
     "glob": "^8.1.0",
