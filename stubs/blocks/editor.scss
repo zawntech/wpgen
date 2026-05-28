@@ -1,0 +1,9 @@
+/**
+ * {{ block_title }} - Editor-only styles
+ *
+ * Loaded only inside the block editor. For shared frontend +
+ * editor styles, use style.scss.
+ */
+.wp-block-{{ plugin_text_domain }}-{{ block_slug }} {
+    // Editor-only styles for this block.
+}

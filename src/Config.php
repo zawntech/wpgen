@@ -120,4 +120,18 @@ class Config
     public function ajaxControllerOptions() {
         return $this->loadConfigFile( 'ajax-controller-options' );
     }
+
+    /**
+     * @return array Block options.
+     */
+    public function blockOptions() {
+        return $this->loadConfigFile( 'block-options' );
+    }
+
+    /**
+     * @return array Pattern options.
+     */
+    public function patternOptions() {
+        return $this->loadConfigFile( 'pattern-options' );
+    }
 }

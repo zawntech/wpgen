@@ -1,0 +1,9 @@
+/**
+ * {{ block_title }} - Frontend + editor styles
+ *
+ * Loaded on the frontend AND in the editor. Use editor.scss for
+ * editor-only styles.
+ */
+.wp-block-{{ plugin_text_domain }}-{{ block_slug }} {
+    // Frontend + editor styles for this block.
+}

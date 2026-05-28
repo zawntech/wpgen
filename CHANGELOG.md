@@ -1,5 +1,27 @@
 # Changelog
 
+## 2026-05-27
+
+### Added
+- `stubs/gutenberg/editor-settings.php` -- generates `src/Gutenberg/EditorSettings.php` in plugins scaffolded by `create:block` or `create:pattern`. Hooks `block_editor_settings_all` to set `disableContentOnlyForUnsyncedPatterns => true`, opting plugin patterns out of WP 7.0's auto-content-only behavior so inner structural blocks (groups inside the pattern outer wrapper) remain visible and navigable in List View. Without this filter, WP 7.0 server-side adds `metadata.patternName` to any single-root pattern's outer block during REST resolution, which the editor client then treats as a content-only instance -- hiding the inner groups and hoisting their children up to the outer's level.
+- `GutenbergComponent` stub updated to instantiate `EditorSettings` alongside `RegisterBlocks` and `RegisterPatterns`.
+- `RegisterGutenbergComponent` trait now copies `editor-settings.php` -> `EditorSettings.php` so the filter ships on the first `create:block` or `create:pattern` run.
+
+## 2026-05-26
+
+### Added
+- `create:block` command -- scaffolds a Gutenberg block under `assets/blocks/{slug}/` with `block.json`, `index.js`, `edit.js`, `save.js`, `render.php`, `style.scss`, `editor.scss`, and a `build/index.asset.php` declaring WP package dependencies. Both `save.js` and `render.php` are emitted every run; the developer deletes whichever they do not need (default config is a dynamic block -- `save` returns null and `block.json` points `render` at `render.php`).
+- `create:pattern` command -- scaffolds a block pattern PHP file under `patterns/{slug}.php` with WP-standard header comments (`Title`, `Slug`, `Description`, `Categories`, `Keywords`, `Block Types`, `Viewport Width`). File body is captured via output buffering so inline PHP (i18n, escaping) runs at registration time. Mirrors the WordPress core theme pattern convention.
+- `Gutenberg\GutenbergComponent` -- unified component generated into `src/Gutenberg/` on the first `create:block` or `create:pattern` run and registered in the main plugin class. Hooks `init` twice: `register_blocks()` globs `assets/blocks/*/block.json` and calls `register_block_type()`; `register_patterns()` globs `patterns/*.php`, reads file headers via `get_file_data()`, captures the body via output buffering, and calls `register_block_pattern()`. Adding either a block or a pattern is zero-PHP after the first run.
+- `RegisterGutenbergComponent` trait -- shared bootstrap logic used by both `create:block` and `create:pattern` so they generate one component instead of two parallel `src/` subdirectories.
+- `config/block-options.php` -- prompts for block title, description, category, icon (optional), and keywords (optional). Slug is derived from the title (kebab-cased); keyword CSV is converted to a JSON array for `block.json`.
+- `stubs/blocks/` directory with block.json, edit/save/index JS, render.php, scss, and a static `index.asset.php` listing `wp-blocks`, `wp-block-editor`, `wp-element`, `wp-i18n`, `wp-components` so `register_block_type()` enqueues the correct WP deps before webpack adds its own dependency-extraction.
+
+### Changed
+- `create:webpack` config (`stubs/webpack/webpack.config.js`) now also auto-discovers `assets/blocks/*/index.js`, `assets/blocks/*/style.scss`, and `assets/blocks/*/editor.scss` -- compiling each in-place to `assets/blocks/{slug}/build/`. block.json references the build artifacts via relative `file:./build/...` paths.
+- The bb-modules cleanup webpack plugin renamed to `CleanEmptyAssetsPlugin` and now also strips empty `.js` stubs and empty `.css` files for the per-block SCSS-only entries.
+- `babel-loader` rule now passes a `pragma`/`pragmaFrag` to `@babel/preset-react` (`wp.element.createElement` / `wp.element.Fragment`) so JSX renders through WordPress's element package -- React is not a global in WP, but `wp.element` is.
+
 ## 2026-05-12
 
 ### Added
