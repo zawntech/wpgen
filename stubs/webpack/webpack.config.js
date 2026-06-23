@@ -15,6 +15,18 @@ if (fs.existsSync('./bb-modules')) {
   });
 }
 
+// Discover all elementor-widgets scss files and create entries that output css in-place.
+// e.g. elementor-widgets/feature-cards/css/frontend.scss -> elementor-widgets/feature-cards/css/frontend
+const elementorWidgetEntries = {};
+const elementorWidgetKeys = [];
+if (fs.existsSync('./elementor-widgets')) {
+  glob.sync('./elementor-widgets/**/css/*.scss').forEach(file => {
+    const key = file.replace('.scss', '').replace('./', '');
+    elementorWidgetEntries[key] = file;
+    elementorWidgetKeys.push(key);
+  });
+}
+
 // Discover all Gutenberg block sources under assets/blocks/{slug}/ and create
 // per-block entries that compile in-place into assets/blocks/{slug}/build/.
 //
@@ -53,7 +65,7 @@ if (fs.existsSync('./assets/blocks')) {
 class CleanEmptyAssetsPlugin {
   apply(compiler) {
     compiler.hooks.afterEmit.tap('CleanEmptyAssetsPlugin', () => {
-      [...bbModuleKeys, ...blockCssOnlyKeys].forEach(key => {
+      [...bbModuleKeys, ...elementorWidgetKeys, ...blockCssOnlyKeys].forEach(key => {
         const jsFile = path.resolve(__dirname, key + '.js');
         if (fs.existsSync(jsFile)) fs.unlinkSync(jsFile);
 
@@ -81,6 +93,7 @@ module.exports = {
       './assets/sass/admin.scss',
     ],
     ...bbModuleEntries,
+    ...elementorWidgetEntries,
     ...blockEntries,
   },
   output: {

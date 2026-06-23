@@ -1,0 +1,10 @@
+/**
+ * Base / structural styles for the {{ widget_name }} widget.
+ *
+ * Per-instance styling (colors, typography, spacing the builder edits) is
+ * driven by each control's `selectors` arg in the widget class - Elementor
+ * generates the scoped CSS. Keep ONLY layout/structural styles here.
+ */
+@use 'variables';
+
+.{{ widget_dir }} {}

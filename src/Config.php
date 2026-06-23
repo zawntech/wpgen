@@ -71,6 +71,13 @@ class Config
         return $this->loadConfigFile( 'beaver-builder-settings-form-options' );
     }
 
+    /**
+     * @return array Elementor widget options.
+     */
+    public function elementorModuleOptions() {
+        return $this->loadConfigFile( 'elementor-module-options' );
+    }
+
 
     /**
      * @return array Component options.

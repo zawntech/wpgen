@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-06-18
+
+### Added
+- `create:elementor-module` command -- scaffolds an Elementor widget, mirroring `create:bb-module`. Generates `src/Elementor/Widgets/{Name}Widget.php` (a `\Elementor\Widget_Base` subclass with `get_name`/`get_title`/`get_icon`/`get_categories`/`get_keywords`, asset-handle registration in the constructor, a starter `register_controls()` demonstrating the `selectors`/`{{WRAPPER}}` styling path, and matching `render()` + `content_template()`), plus a per-widget asset folder `elementor-widgets/{slug}/` with `css/frontend.scss`, `css/_variables.scss`, and `js/frontend.js`.
+- `Elementor\ElementorComponent` -- generated into `src/Elementor/` on the first `create:elementor-module` run and registered in the main plugin class. Hooks `elementor/widgets/register` (loops `widgets()` and calls `$widgets_manager->register()`) and `elementor/elements/categories_registered` (registers a plugin widget category). Adding a widget is zero-PHP after the first run; the command inserts each `Widgets\{Name}Widget::class` into the `widgets()` array.
+- `config/elementor-module-options.php` -- prompts for widget name, description, icon (optional, defaults to `eicon-code`), category (optional, defaults to the plugin text domain), and keywords (optional CSV). Directory (kebab), class (Pascal), globally-unique slug/`get_name` (text-domain prefixed), and asset handle are inferred from the name.
+- `stubs/elementor/` directory with the component, widget, SCSS, `_variables.scss`, and JS stubs.
+
+### Changed
+- `create:webpack` config (`stubs/webpack/webpack.config.js`) now also auto-discovers `elementor-widgets/**/css/*.scss` and compiles each in-place to `frontend.css`, exactly like `bb-modules`. `CleanEmptyAssetsPlugin` strips the empty `.js`/`.css` artifacts for these SCSS-only entries too.
+
 ## 2026-05-27
 
 ### Added
