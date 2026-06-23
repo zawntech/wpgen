@@ -9,7 +9,8 @@
     }
   ],
   "require": {
-    "allegedwizard/wp-admin-options": "dev-dev"
+    "allegedwizard/wp-admin-options": "dev-dev",
+    "enshrined/svg-sanitize": "dev-master"
   },
   "minimum-stability": "dev",
   "autoload": {

@@ -7,5 +7,6 @@ class SetupComponent
         new EnqueueAssets;
         new ActivatePlugin;
         new DeactivatePlugin;
+        new SvgSupport;
     }
 }

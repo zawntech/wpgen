@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-06-23
+
+### Added
+- `create:plugin` now scaffolds `src/Setup/SvgSupport.php` and instantiates it in `SetupComponent`, so new plugins ship media-library SVG upload support out of the box. The class hooks `upload_mimes` (whitelist `image/svg+xml`), `wp_check_filetype_and_ext` (confirm the type from the extension), `wp_handle_upload_prefilter` (sanitize every uploaded SVG with `enshrined/svg-sanitize` before it is stored, rejecting anything that cannot be cleaned), `wp_prepare_attachment_for_js` (give the media modal a preview plus intrinsic width/height read from the SVG `width`/`height` or `viewBox`), and `admin_head` (constrain SVG thumbnails in the media grid/list).
+- `stubs/plugins/setup-plugin-svg-support.php` stub backing the above.
+
+### Changed
+- `stubs/plugins/composer.json` now requires `enshrined/svg-sanitize` (`dev-master`) alongside `allegedwizard/wp-admin-options`, so the SVG sanitizer is available on the first `composer install`.
+
 ## 2026-06-18
 
 ### Added

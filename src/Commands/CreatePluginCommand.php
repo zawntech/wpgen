@@ -107,6 +107,10 @@ class CreatePluginCommand extends Command
             [
                 'source' => 'setup-plugin-deactivate-plugin.php',
                 'target' => '/src/Setup/DeactivatePlugin.php',
+            ],
+            [
+                'source' => 'setup-plugin-svg-support.php',
+                'target' => '/src/Setup/SvgSupport.php',
             ]
         ];
 
