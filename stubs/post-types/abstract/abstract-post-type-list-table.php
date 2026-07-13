@@ -33,7 +33,17 @@ abstract class AbstractPostTypeListTable
         return array_merge( $columns, $this->sortable_columns );
     }
 
+    /**
+     * `manage_{$post_type}_posts_custom_column` fires for every custom column
+     * on the screen, including columns added by other plugins (e.g. Yoast's
+     * wpseo-score), so we must short-circuit on columns we did not register
+     * before dispatching to a render method.
+     */
     public function column_content( $column_name, $post_id ) {
+        if ( ! isset( $this->columns[$column_name] ) ) {
+            return;
+        }
+
         $method = 'render_' . ltrim( $column_name, '_' );
 
         if ( ! method_exists( $this, $method ) ) {

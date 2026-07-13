@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-07-13
+
+### Fixed
+- `stubs/post-types/abstract/abstract-post-type-list-table.php`: `column_content()` no longer fatals when another plugin adds its own column to the post list (e.g. Yoast SEO's `wpseo-score`). The `manage_{$post_type}_posts_custom_column` action fires for every custom column on the screen, not just the subclass's own, but the stub threw a `BadMethodCallException` for any column without a matching `render_*()` method. It now short-circuits on columns not registered in `$columns` and only throws when one of its own columns is missing a render method, matching the guard the users-list stub (`abstract-user-list-table.php`) already had. Found as a production fatal on the CGA site.
+
 ## 2026-06-23
 
 ### Added
