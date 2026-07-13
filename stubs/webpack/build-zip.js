@@ -38,16 +38,21 @@ archive.on('error', (err) => {
 
 archive.pipe(output);
 
-// Add plugin directory contents, excluding dotfiles in root, dot dirs, and node_modules
+// Add plugin directory contents, excluding node_modules and tooling
+// dirs at ANY depth (plugins with nested apps install their own
+// node_modules, e.g. assets/app/node_modules - those must not ship).
+// The bare-dotfile pattern stays root-only on purpose: nested dot
+// dirs can be runtime assets (e.g. a Vite dist/.vite/manifest.json
+// read at enqueue time).
 archive.glob('**/*', {
     cwd: pluginRoot,
     dot: true,
     ignore: [
-        'node_modules/**',
-        '.git/**',
-        '.github/**',
-        '.idea/**',
-        '.vscode/**',
+        '**/node_modules/**',
+        '**/.git/**',
+        '**/.github/**',
+        '**/.idea/**',
+        '**/.vscode/**',
         '.*',
     ],
 }, { prefix: pluginDir });
